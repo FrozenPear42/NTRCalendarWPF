@@ -27,7 +27,7 @@ namespace NTRCalendarWPF.View {
 
         public static readonly DependencyProperty DayProperty =
             DependencyProperty.Register("Day", typeof(DateTime), typeof(DayPanel),
-                new PropertyMetadata(DateTime.Today, (d, e) => { ((DayPanel) d)._vm.Day = e.NewValue as DateTime? ?? new DateTime(); }));
+                new PropertyMetadata(DateTime.MinValue, (d, e) => { ((DayPanel) d)._vm.Day = e.NewValue as DateTime? ?? DateTime.MinValue; }));
 
         public DateTime Day {
             get => (DateTime) GetValue(DayProperty);

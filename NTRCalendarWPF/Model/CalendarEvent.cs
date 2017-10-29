@@ -15,5 +15,9 @@ namespace NTRCalendarWPF.Model {
             Start = start;
             End = end;
         }
+
+        public override string ToString() {
+            return Start.ToString("dd.MM HH:mm - ") + End.ToString("HH:mm ") + Name;
+        }
     }
 }

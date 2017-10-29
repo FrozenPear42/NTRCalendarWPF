@@ -15,30 +15,44 @@
             <viewModel:DayPanelViewModel />
         </Border.DataContext>
 
-        <StackPanel Background="White">
-            <Border CornerRadius="1" BorderBrush="Black" BorderThickness="1">
+        <Grid Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" CornerRadius="1" BorderBrush="Black" BorderThickness="1">
                 <Label Content="{Binding Title}" />
             </Border>
-            <ItemsControl ItemsSource="{Binding EventsSource}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="#008080" BorderThickness="1" CornerRadius="1">
-                            <Border.Resources>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#008080"/>
-                                </Style>
-                            </Border.Resources>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock>
-                                    <Run Text="{Binding Start, StringFormat={}{0:HH:mm}\ -}" />
-                                    <Run Text="{Binding Start, StringFormat={}{0:HH:mm}}" />
-                                    <Run Text="{Binding Name}" />
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
+            <StackPanel Grid.Row="1" VerticalAlignment="Stretch" Background="White">
+                <StackPanel.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CommandDaySelected}" />
+                </StackPanel.InputBindings>
+                <ItemsControl ItemsSource="{Binding Events}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#008080" BorderThickness="1" CornerRadius="1">
+                                <Border.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#008080" />
+                                    </Style>
+                                </Border.Resources>
+                                <Border.InputBindings>
+                                    <MouseBinding Gesture="LeftDoubleClick"
+                                                  Command="{Binding Path=DataContext.CommandDaySelected, ElementName=DayPanelRoot}"
+                                                  CommandParameter="{Binding}" />
+                                </Border.InputBindings>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock>
+                                        <Run Text="{Binding Start, StringFormat={}{0:HH:mm}\ -}" />
+                                        <Run Text="{Binding Start, StringFormat={}{0:HH:mm}}" />
+                                        <Run Text="{Binding Name}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
     </Border>
 </UserControl>

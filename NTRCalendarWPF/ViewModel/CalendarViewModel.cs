@@ -36,7 +36,11 @@ namespace NTRCalendarWPF.ViewModel {
 
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
             CommandNext = new RelayCommand(e => ChangeWeek(1));
-            _firstDay = DateTime.Today.AddDays(DayOfWeek.Monday - DateTime.Today.DayOfWeek);
+
+            _firstDay = DateTime.Today;
+            while (_firstDay.DayOfWeek != DayOfWeek.Monday) _firstDay = _firstDay.AddDays(-1);
+            FirstDay = _firstDay;
+
             UpdateView();
         }
 
