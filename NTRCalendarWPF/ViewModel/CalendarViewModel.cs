@@ -1,77 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
+using NTRCalendarWPF.Annotations;
+using NTRCalendarWPF.Model;
 
 namespace NTRCalendarWPF.ViewModel {
-    public class CalendarViewModel : INotifyPropertyChanged {
-        public CalendarViewModel() {
-            CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
-            CommandNext = new RelayCommand(e => ChangeWeek(1));
-            InitView();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
+    public class CalendarViewModel : ViewModelBase {
         public ICommand CommandNext { get; set; }
         public ICommand CommandPrevious { get; set; }
 
-        private String _weekField1;
-        private String _weekField2;
-        private String _weekField3;
-        private String _weekField4;
+        public ObservableCollection<string> WeekFields { get; set; }
+        public ObservableCollection<CalendarEvent> Events { get; set; }
 
-        public String WeekField1 {
-            get => _weekField1;
-            set {
-                if (value == _weekField1) return;
-                _weekField1 = value;
-                NotifyPropertyChanged();
+        private DateTime _firstDay;
+
+        public DateTime FirstDay {
+            get => _firstDay;
+            set => SetProperty(ref _firstDay, value);
+        }
+
+        public CalendarViewModel() {
+            WeekFields = new ObservableCollection<string> {"", "", "", ""};
+            Events = new ObservableCollection<CalendarEvent>();
+
+            Events.Add(new CalendarEvent("Test1", DateTime.Now, DateTime.Now));
+            Events.Add(new CalendarEvent("Test2", DateTime.Now, DateTime.Now));
+
+            CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
+            CommandNext = new RelayCommand(e => ChangeWeek(1));
+            _firstDay = DateTime.Today.AddDays(DayOfWeek.Monday - DateTime.Today.DayOfWeek);
+            UpdateView();
+        }
+
+        private void UpdateView() {
+            var calendar = new GregorianCalendar();
+
+            for (var i = 0; i < 4; ++i) {
+                var day = calendar.AddWeeks(_firstDay, i);
+                var week = calendar.GetWeekOfYear(day, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+                var year = calendar.GetYear(day);
+                WeekFields[i] = $"W{week:D2}\n{year}";
             }
         }
 
-        public String WeekField2 {
-            get => _weekField2;
-            set {
-                if (value == _weekField2) return;
-                _weekField2 = value;
-                NotifyPropertyChanged();
-            }
-        }
+        private void ChangeWeek(int direction) {
+            FirstDay = FirstDay.AddDays(7 * direction);
 
-        public String WeekField3 {
-            get => _weekField3;
-            set {
-                if (value == _weekField3) return;
-                _weekField3 = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public String WeekField4 {
-            get => _weekField4;
-            set {
-                if (value == _weekField4) return;
-                _weekField4 = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        private void InitView() {
-            WeekField1 = "asd";
-            WeekField2 = "asd";
-            WeekField3 = "asd";
-            WeekField4 = "asd";
-        }
-
-        private void ChangeWeek(int direction) { }
-
-        protected virtual void NotifyPropertyChanged([CallerMemberName] String propertyName = "") {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            UpdateView();
         }
     }
 }

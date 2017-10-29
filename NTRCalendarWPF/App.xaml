@@ -5,5 +5,7 @@
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
         <viewModel:CalendarViewModel x:Key="CalendarViewModel" />
+        <viewModel:EditDetailsViewModel x:Key="EditDetailsViewModel" />
+        <viewModel:DayPanelViewModel x:Key="DayPanelViewModel" />
     </Application.Resources>
 </Application>

@@ -1,34 +1,36 @@
 ﻿<Window x:Class="NTRCalendarWPF.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:root="clr-namespace:NTRCalendarWPF"
+        xmlns:view="clr-namespace:NTRCalendarWPF.View"
         Title="Calendar" DataContext="{StaticResource CalendarViewModel}" MinWidth="960" MinHeight="300"
-        Background="White" Width="960" Height="300">
+        Background="White" Width="960" Height="500">
 
 
-    <Grid ShowGridLines="True" TextElement.FontFamily="Courier New" TextElement.FontSize="14">
+    <Grid TextElement.FontFamily="Courier New" TextElement.FontSize="14" TextElement.Foreground="#00008F">
 
         <Grid.Resources>
-            <Style TargetType="TextElement">
-                <Setter Property="FontFamily" Value="Courier New" />
-                <Setter Property="FontSize" Value="14" />
-            </Style>
+            <root:DayDateConverter x:Key="DayDateConverter" />
 
             <Style TargetType="Button">
-                <Setter Property="Margin" Value="5,5,5,5" />
+                <Setter Property="Margin" Value="2" />
                 <Setter Property="Background" Value="#CBE5E5" />
                 <Setter Property="BorderThickness" Value="0" />
-
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                 <Setter Property="VerticalAlignment" Value="Stretch" />
             </Style>
 
             <Style TargetType="Label">
-                <Setter Property="Margin" Value="5,5,5,5" />
+                <Setter Property="Margin" Value="2" />
                 <Setter Property="Background" Value="#FFCBCBE8" />
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                 <Setter Property="VerticalAlignment" Value="Stretch" />
                 <Setter Property="HorizontalContentAlignment" Value="Center" />
                 <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+
+            <Style TargetType="view:DayPanel">
+                <Setter Property="Margin" Value="2" />
             </Style>
         </Grid.Resources>
 
@@ -74,15 +76,19 @@
         <Label Grid.Column="6" Grid.Row="5" Content="Saturday" />
         <Label Grid.Column="7" Grid.Row="5" Content="Sunday" />
 
-        <Label Grid.Column="0" Grid.Row="1" Content="{Binding WeekField1}" />
-        <Label Grid.Column="0" Grid.Row="2" Content="{Binding WeekField2}" />
-        <Label Grid.Column="0" Grid.Row="3" Content="{Binding WeekField3}" />
-        <Label Grid.Column="0" Grid.Row="4" Content="{Binding WeekField4}" />
+        <Label Grid.Column="0" Grid.Row="1" Content="{Binding WeekFields[0]}" />
+        <Label Grid.Column="0" Grid.Row="2" Content="{Binding WeekFields[1]}" />
+        <Label Grid.Column="0" Grid.Row="3" Content="{Binding WeekFields[2]}" />
+        <Label Grid.Column="0" Grid.Row="4" Content="{Binding WeekFields[3]}" />
 
-        <Label Grid.Column="8" Grid.Row="1" Content="{Binding WeekField1}" />
-        <Label Grid.Column="8" Grid.Row="2" Content="{Binding WeekField2}" />
-        <Label Grid.Column="8" Grid.Row="3" Content="{Binding WeekField3}" />
-        <Label Grid.Column="8" Grid.Row="4" Content="{Binding WeekField4}" />
+        <Label Grid.Column="8" Grid.Row="1" Content="{Binding WeekFields[0]}" />
+        <Label Grid.Column="8" Grid.Row="2" Content="{Binding WeekFields[1]}" />
+        <Label Grid.Column="8" Grid.Row="3" Content="{Binding WeekFields[2]}" />
+        <Label Grid.Column="8" Grid.Row="4" Content="{Binding WeekFields[3]}" />
+
+        <view:DayPanel Grid.Column="1" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=0}" EventsSource="{Binding Events}" />
+        <view:DayPanel Grid.Column="2" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=1}" EventsSource="{Binding Events}"/>
+        <view:DayPanel Grid.Column="3" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=2}" EventsSource="{Binding Events}"/>
 
     </Grid>
 </Window>

@@ -1,8 +1,44 @@
 ﻿<UserControl x:Class="NTRCalendarWPF.View.DayPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <StackPanel>
-        <Label />
-        <ListView />
-    </StackPanel>
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel">
+
+    <Border CornerRadius="2" BorderBrush="Black" BorderThickness="2" x:Name="DayPanelRoot">
+        <Border.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Background" Value="White" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+        </Border.Resources>
+
+        <Border.DataContext>
+            <viewModel:DayPanelViewModel />
+        </Border.DataContext>
+
+        <StackPanel Background="White">
+            <Border CornerRadius="1" BorderBrush="Black" BorderThickness="1">
+                <Label Content="{Binding Title}" />
+            </Border>
+            <ItemsControl ItemsSource="{Binding EventsSource}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#008080" BorderThickness="1" CornerRadius="1">
+                            <Border.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#008080"/>
+                                </Style>
+                            </Border.Resources>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>
+                                    <Run Text="{Binding Start, StringFormat={}{0:HH:mm}\ -}" />
+                                    <Run Text="{Binding Start, StringFormat={}{0:HH:mm}}" />
+                                    <Run Text="{Binding Name}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Border>
 </UserControl>
