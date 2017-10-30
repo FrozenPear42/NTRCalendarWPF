@@ -3,34 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:NTRCalendarWPF.View"
         Title="Edit Details"
-        DataContext="{StaticResource EditDetailsViewModel}" Width="200" Height="400">
-    <StackPanel>
+        DataContext="{StaticResource EditDetailsViewModel}" Width="200" Height="345">
+    <StackPanel VerticalAlignment="Top">
         <StackPanel.Resources>
             <Style TargetType="Button">
-                <Setter Property="Margin" Value="5,5,5,5"/>
-                <Setter Property="Padding" Value="5,5,5,5"/>
+                <Setter Property="Margin" Value="5,5,5,5" />
+                <Setter Property="Padding" Value="5,5,5,5" />
             </Style>
         </StackPanel.Resources>
         <GroupBox Header="Time">
             <StackPanel>
                 <Label Content="From" />
-                <view:TimePicker/>
+                <view:TimePicker Value="{Binding CurrentEvent.Start}" />
                 <Label Content="To" />
-                <view:TimePicker/>
+                <view:TimePicker Value="{Binding CurrentEvent.Start}"/>
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Details">
             <StackPanel>
                 <Label Content="Name" />
-                <TextBox Text="{Binding Name}" />
+                <TextBox Text="{Binding CurrentEvent.Name}" />
                 <Label Content="Description" />
-                <TextBox Text="{Binding Description}" />
+                <TextBox TextWrapping="Wrap" MinLines="4" MaxLines="4" Text="{Binding CurrentEvent.Description}" />
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Remove" />
-            <Button Content="Cancel" />
-            <Button Content="Save" />
+            <Button Content="Remove" Command="{Binding CommandRemove}" />
+            <Button Content="Cancel" Command="{Binding CommandCancel}" />
+            <Button Content="Save" Command="{Binding CommandSave}" />
         </StackPanel>
     </StackPanel>
 </Window>
