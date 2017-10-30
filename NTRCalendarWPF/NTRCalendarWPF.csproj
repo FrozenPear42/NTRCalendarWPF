@@ -60,6 +60,8 @@
     </ApplicationDefinition>
     <Compile Include="DayDateConverter.cs" />
     <Compile Include="Model\CalendarEvent.cs" />
+    <Compile Include="Model\FileCalendarEventRepository.cs" />
+    <Compile Include="Model\ICalendarEventRepository.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModel\DayPanelViewModel.cs" />
     <Compile Include="ViewModel\TimePickerViewModel.cs" />

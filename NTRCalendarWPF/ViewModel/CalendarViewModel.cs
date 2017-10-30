@@ -20,6 +20,7 @@ namespace NTRCalendarWPF.ViewModel {
         public ICommand CommandAddEvent { get; set; }
         public ICommand CommandEditEvent { get; set; }
 
+        public ICalendarEventRepository EventRepository { get; private set; }
         public ObservableCollection<string> WeekFields { get; set; }
         public ObservableCollection<CalendarEvent> Events { get; set; }
 
@@ -32,10 +33,14 @@ namespace NTRCalendarWPF.ViewModel {
 
         public CalendarViewModel() {
             WeekFields = new ObservableCollection<string> {"", "", "", ""};
-            Events = new ObservableCollection<CalendarEvent>();
+            EventRepository = new FileCalendarEventRepository("calendar.dat");
+            EventRepository.EventAdded += calendarEvent => Events.Add(calendarEvent);
+            EventRepository.EventRemoved += calendarEvent => Events.Remove(calendarEvent);
+            EventRepository.EventReplaced += (oldEvent, newEvent) => {
+                if (Events.Remove(oldEvent)) Events.Add(newEvent);
+            };
 
-            Events.Add(new CalendarEvent("Test1", DateTime.Now, DateTime.Now));
-            Events.Add(new CalendarEvent("Test2", DateTime.Now, DateTime.Now));
+            Events = new ObservableCollection<CalendarEvent>(EventRepository.GetEvents());
 
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
             CommandNext = new RelayCommand(e => ChangeWeek(1));
@@ -51,9 +56,8 @@ namespace NTRCalendarWPF.ViewModel {
         }
 
         private void OpenEditWindow(DateTime day, CalendarEvent calendarEvent) {
-
             Console.Out.WriteLine(day);
-            if(calendarEvent != null)
+            if (calendarEvent != null)
                 Console.Out.WriteLine(calendarEvent);
 
             var dialog = new EditDetailsWindow();

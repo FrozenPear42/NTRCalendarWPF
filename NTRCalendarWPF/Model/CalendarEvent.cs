@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NTRCalendarWPF.Model {
+
+    [Serializable]
     public class CalendarEvent {
         public string Name { get; set; }
         public DateTime Start { get; set; }
