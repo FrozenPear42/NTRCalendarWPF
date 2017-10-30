@@ -11,11 +11,14 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using NTRCalendarWPF.Annotations;
 using NTRCalendarWPF.Model;
+using NTRCalendarWPF.View;
 
 namespace NTRCalendarWPF.ViewModel {
     public class CalendarViewModel : ViewModelBase {
         public ICommand CommandNext { get; set; }
         public ICommand CommandPrevious { get; set; }
+        public ICommand CommandAddEvent { get; set; }
+        public ICommand CommandEditEvent { get; set; }
 
         public ObservableCollection<string> WeekFields { get; set; }
         public ObservableCollection<CalendarEvent> Events { get; set; }
@@ -36,12 +39,25 @@ namespace NTRCalendarWPF.ViewModel {
 
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
             CommandNext = new RelayCommand(e => ChangeWeek(1));
+            CommandAddEvent = new RelayCommand(e => OpenEditWindow((DateTime) e, null));
+            CommandEditEvent = new RelayCommand(e => OpenEditWindow(((CalendarEvent) e).Start.Date, (CalendarEvent) e));
+
 
             _firstDay = DateTime.Today;
             while (_firstDay.DayOfWeek != DayOfWeek.Monday) _firstDay = _firstDay.AddDays(-1);
             FirstDay = _firstDay;
 
             UpdateView();
+        }
+
+        private void OpenEditWindow(DateTime day, CalendarEvent calendarEvent) {
+
+            Console.Out.WriteLine(day);
+            if(calendarEvent != null)
+                Console.Out.WriteLine(calendarEvent);
+
+            var dialog = new EditDetailsWindow();
+            dialog.ShowDialog();
         }
 
         private void UpdateView() {

@@ -31,7 +31,9 @@
 
             <Style TargetType="view:DayPanel">
                 <Setter Property="Margin" Value="2" />
-                <Setter Property="EventsSource" Value="{Binding Events}"></Setter>
+                <Setter Property="EventsSource" Value="{Binding Events}"/>
+                <Setter Property="AddEvent" Value="{Binding CommandAddEvent}"/>
+                <Setter Property="EditEvent" Value="{Binding CommandEditEvent}"/>
             </Style>
             
         </Grid.Resources>

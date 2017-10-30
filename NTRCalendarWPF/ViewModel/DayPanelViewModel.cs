@@ -18,8 +18,6 @@ namespace NTRCalendarWPF.ViewModel {
         private DateTime _day;
         private string _title;
 
-        public ICommand CommandDaySelected { get; set; }
-
         public ObservableCollection<CalendarEvent> EventsSource {
             get => _eventsSource;
             set {
@@ -55,14 +53,7 @@ namespace NTRCalendarWPF.ViewModel {
 
         public DayPanelViewModel() {
             Events = new ObservableCollection<CalendarEvent>();
-            CommandDaySelected = new RelayCommand(e => OpenDetailsWindow((CalendarEvent) e));
         }
 
-        private void OpenDetailsWindow(CalendarEvent e) {
-            if (e != null)
-                Console.Out.WriteLine(e);
-            else
-                Console.Out.WriteLine("null event");
-        }
     }
 }

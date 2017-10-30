@@ -20,29 +20,47 @@ namespace NTRCalendarWPF.View {
     public partial class DayPanel : UserControl {
         private DayPanelViewModel _vm;
 
-        public DayPanel() {
-            InitializeComponent();
-            _vm = (DayPanelViewModel) DayPanelRoot.DataContext;
-        }
-
         public static readonly DependencyProperty DayProperty =
             DependencyProperty.Register("Day", typeof(DateTime), typeof(DayPanel),
-                new PropertyMetadata(DateTime.MinValue, (d, e) => { ((DayPanel) d)._vm.Day = e.NewValue as DateTime? ?? DateTime.MinValue; }));
+                new PropertyMetadata(DateTime.MinValue,
+                    (d, e) => { ((DayPanel) d)._vm.Day = e.NewValue as DateTime? ?? DateTime.MinValue; }));
+
+        public static readonly DependencyProperty EventsSourceProperty =
+            DependencyProperty.Register("EventsSource", typeof(ObservableCollection<CalendarEvent>),
+                typeof(DayPanel),
+                new PropertyMetadata(null,
+                    (d, e) => {
+                        ((DayPanel) d)._vm.EventsSource = e.NewValue as ObservableCollection<CalendarEvent>;
+                    }));
+
+        public static readonly DependencyProperty EditEventProperty =
+            DependencyProperty.Register("EditEvent", typeof(ICommand), typeof(DayPanel), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty AddEventProperty =
+            DependencyProperty.Register("AddEvent", typeof(ICommand), typeof(DayPanel), new PropertyMetadata(null));
+
+        public ObservableCollection<CalendarEvent> EventsSource {
+            get => (ObservableCollection<CalendarEvent>) GetValue(EventsSourceProperty);
+            set => SetValue(EventsSourceProperty, value);
+        }
 
         public DateTime Day {
             get => (DateTime) GetValue(DayProperty);
             set => SetValue(DayProperty, value);
         }
 
-        public static readonly DependencyProperty EventsSourceProperty =
-            DependencyProperty.Register("EventsSource", typeof(ObservableCollection<CalendarEvent>),
-                typeof(DayPanel),
-                new PropertyMetadata(null,
-                    (d, e) => {((DayPanel) d)._vm.EventsSource = e.NewValue as ObservableCollection<CalendarEvent>; }));
+        public ICommand EditEvent {
+            get => (ICommand) GetValue(EditEventProperty);
+            set => SetValue(EditEventProperty, value);
+        }
+        public ICommand AddEvent {
+            get => (ICommand) GetValue(AddEventProperty);
+            set => SetValue(AddEventProperty, value);
+        }
 
-        public ObservableCollection<CalendarEvent> EventsSource {
-            get =>  (ObservableCollection<CalendarEvent>) GetValue(EventsSourceProperty);
-            set => SetValue(EventsSourceProperty, value);
+        public DayPanel() {
+            InitializeComponent();
+            _vm = (DayPanelViewModel) DayPanelRoot.DataContext;
         }
     }
 }

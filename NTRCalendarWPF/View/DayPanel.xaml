@@ -1,7 +1,8 @@
 ﻿<UserControl x:Class="NTRCalendarWPF.View.DayPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel">
+             xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel"
+             x:Name="Root">
 
     <Border CornerRadius="2" BorderBrush="Black" BorderThickness="2" x:Name="DayPanelRoot">
         <Border.Resources>
@@ -18,14 +19,14 @@
         <Grid Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Border Grid.Row="0" CornerRadius="1" BorderBrush="Black" BorderThickness="1">
                 <Label Content="{Binding Title}" />
             </Border>
             <StackPanel Grid.Row="1" VerticalAlignment="Stretch" Background="White">
                 <StackPanel.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding CommandDaySelected}" />
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=AddEvent, ElementName=Root}" CommandParameter="{Binding Day}" />
                 </StackPanel.InputBindings>
                 <ItemsControl ItemsSource="{Binding Events}">
                     <ItemsControl.ItemTemplate>
@@ -38,7 +39,7 @@
                                 </Border.Resources>
                                 <Border.InputBindings>
                                     <MouseBinding Gesture="LeftDoubleClick"
-                                                  Command="{Binding Path=DataContext.CommandDaySelected, ElementName=DayPanelRoot}"
+                                                  Command="{Binding Path=EditEvent, ElementName=Root}"
                                                   CommandParameter="{Binding}" />
                                 </Border.InputBindings>
                                 <StackPanel Orientation="Horizontal">
