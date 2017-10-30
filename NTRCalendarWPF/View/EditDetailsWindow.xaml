@@ -2,8 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:NTRCalendarWPF.View"
+        xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel"
         Title="Edit Details"
-        DataContext="{StaticResource EditDetailsViewModel}" Width="200" Height="345">
+        Width="200" Height="345">
+    
+    <Window.DataContext>
+        <viewModel:EditDetailsViewModel x:Name="EditDetailsViewModel"/>
+    </Window.DataContext>
+    
     <StackPanel VerticalAlignment="Top">
         <StackPanel.Resources>
             <Style TargetType="Button">

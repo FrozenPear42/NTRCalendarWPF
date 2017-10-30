@@ -53,6 +53,7 @@ namespace NTRCalendarWPF.View {
             get => (ICommand) GetValue(EditEventProperty);
             set => SetValue(EditEventProperty, value);
         }
+
         public ICommand AddEvent {
             get => (ICommand) GetValue(AddEventProperty);
             set => SetValue(AddEventProperty, value);

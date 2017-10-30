@@ -3,10 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:root="clr-namespace:NTRCalendarWPF"
         xmlns:view="clr-namespace:NTRCalendarWPF.View"
-        Title="Calendar" DataContext="{StaticResource CalendarViewModel}" MinWidth="960" MinHeight="300"
+        xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel"
+        Title="Calendar" MinWidth="960" MinHeight="300"
         Background="White" Width="1400" Height="500">
 
-
+    <Window.DataContext>
+        <viewModel:CalendarViewModel x:Name="CalendarViewModel"/>
+    </Window.DataContext>
+    
     <Grid TextElement.FontFamily="Courier New" TextElement.FontSize="14" TextElement.Foreground="#00008F">
 
         <Grid.Resources>
