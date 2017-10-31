@@ -19,7 +19,8 @@ namespace NTRCalendarWPF.ViewModel {
         public ICommand CommandPrevious { get; set; }
         public ICommand CommandAddEvent { get; set; }
         public ICommand CommandEditEvent { get; set; }
-
+        public IWindowService WindowService { set; get; }
+        
         public ICalendarEventRepository EventRepository { get; private set; }
         public ObservableCollection<string> WeekFields { get; set; }
         public ObservableCollection<CalendarEvent> Events { get; set; }
@@ -33,6 +34,7 @@ namespace NTRCalendarWPF.ViewModel {
 
         public CalendarViewModel() {
             WeekFields = new ObservableCollection<string> {"", "", "", ""};
+
             EventRepository = new FileCalendarEventRepository("calendar.dat");
             EventRepository.EventAdded += calendarEvent => Events.Add(calendarEvent);
             EventRepository.EventRemoved += calendarEvent => Events.Remove(calendarEvent);
@@ -41,27 +43,17 @@ namespace NTRCalendarWPF.ViewModel {
             };
 
             Events = new ObservableCollection<CalendarEvent>(EventRepository.GetEvents());
-
+            
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
             CommandNext = new RelayCommand(e => ChangeWeek(1));
-            CommandAddEvent = new RelayCommand(e => OpenEditWindow((DateTime) e, null));
-            CommandEditEvent = new RelayCommand(e => OpenEditWindow(((CalendarEvent) e).Start.Date, (CalendarEvent) e));
-
-
-            _firstDay = DateTime.Today;
-            while (_firstDay.DayOfWeek != DayOfWeek.Monday) _firstDay = _firstDay.AddDays(-1);
-            FirstDay = _firstDay;
+            CommandAddEvent = new RelayCommand(e => WindowService?.ShowWindow(null));
+            CommandEditEvent = new RelayCommand(e => WindowService?.ShowWindow((CalendarEvent) e));
+            
+            var day = DateTime.Today;
+            while (day.DayOfWeek != DayOfWeek.Monday) day = day.AddDays(-1);
+            FirstDay = day;
 
             UpdateView();
-        }
-
-        private void OpenEditWindow(DateTime day, CalendarEvent calendarEvent) {
-            Console.Out.WriteLine(day);
-            if (calendarEvent != null)
-                Console.Out.WriteLine(calendarEvent);
-
-            var dialog = new EditDetailsWindow();
-            dialog.ShowDialog();
         }
 
         private void UpdateView() {

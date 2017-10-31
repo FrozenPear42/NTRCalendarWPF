@@ -45,7 +45,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock>
                                         <Run Text="{Binding Start, StringFormat={}{0:HH:mm}\ -}" />
-                                        <Run Text="{Binding Start, StringFormat={}{0:HH:mm}}" />
+                                        <Run Text="{Binding End, StringFormat={}{0:HH:mm}}" />
                                         <Run Text="{Binding Name}" />
                                     </TextBlock>
                                 </StackPanel>

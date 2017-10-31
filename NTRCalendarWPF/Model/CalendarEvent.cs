@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NTRCalendarWPF.Model {
-
     [Serializable]
     public class CalendarEvent {
         public string Name { get; set; }
@@ -17,6 +16,13 @@ namespace NTRCalendarWPF.Model {
             Name = name;
             Start = start;
             End = end;
+        }
+
+        public CalendarEvent() {
+            Name = "";
+            Description = "";
+            Start = DateTime.Today;
+            End = DateTime.Today;
         }
 
         public override string ToString() {

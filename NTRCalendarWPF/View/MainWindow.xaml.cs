@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using NTRCalendarWPF.Model;
 
-namespace NTRCalendarWPF.View
-{
-    public delegate void OpenWindowDelegate();
+namespace NTRCalendarWPF.View {
     public partial class MainWindow : Window {
-        public ICommand ShowWindow { get; private set; }
-        public MainWindow()
-        {
+        public MainWindow() {
             InitializeComponent();
-            ShowWindow = new RelayCommand(e => {
-                Console.Out.WriteLine(e);
+            CalendarViewModel.WindowService = new WindowService(context => {
+                var window = new EditDetailsWindow {
+                    EditDetailsViewModel = {
+                        OldEvent = (CalendarEvent) context,
+                        CalendarEventRepository = CalendarViewModel.EventRepository
+                    }
+                };
+                window.ShowDialog();
             });
         }
     }

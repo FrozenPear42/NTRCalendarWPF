@@ -22,6 +22,10 @@ namespace NTRCalendarWPF.View
         public EditDetailsWindow()
         {
             InitializeComponent();
+            EditDetailsViewModel.CloseAction = () => {
+                DialogResult = true;
+                Close();
+            };
         }
     }
 }

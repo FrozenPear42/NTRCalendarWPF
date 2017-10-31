@@ -51,7 +51,7 @@ namespace NTRCalendarWPF.Model {
         }
 
         private bool SaveFile() {
-            using (var stream = File.Open(FileName, FileMode.CreateNew)) {
+            using (var stream = File.Open(FileName, FileMode.Create)) {
                 var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 formatter.Serialize(stream, CalendarEvents);
                 return true;
