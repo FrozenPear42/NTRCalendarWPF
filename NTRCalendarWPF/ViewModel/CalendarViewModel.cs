@@ -76,7 +76,7 @@ namespace NTRCalendarWPF.ViewModel {
 
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
             CommandNext = new RelayCommand(e => ChangeWeek(1));
-            CommandAddEvent = new RelayCommand(e => WindowService?.ShowWindow(null));
+            CommandAddEvent = new RelayCommand(e => WindowService?.ShowWindow((DateTime)e));
             CommandEditEvent = new RelayCommand(e => WindowService?.ShowWindow((CalendarEvent) e));
 
             CommandTogglePopup = new RelayCommand(e => IsPopupOpen = !IsPopupOpen);

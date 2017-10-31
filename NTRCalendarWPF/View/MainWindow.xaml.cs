@@ -8,12 +8,16 @@ namespace NTRCalendarWPF.View {
         public MainWindow() {
             InitializeComponent();
             CalendarViewModel.WindowService = new WindowService(context => {
-                var window = new EditDetailsWindow {
-                    EditDetailsViewModel = {
-                        OldEvent = (CalendarEvent) context,
-                        CalendarEventRepository = CalendarViewModel.EventRepository
-                    }
-                };
+                var window = new EditDetailsWindow();
+                if (context is DateTime) {
+                    window.EditDetailsViewModel.Day = (DateTime) context;
+                    window.EditDetailsViewModel.OldEvent = null;
+                }
+                else if (context is CalendarEvent) {
+                    window.EditDetailsViewModel.OldEvent = (CalendarEvent) context;
+                }
+                window.EditDetailsViewModel.CalendarEventRepository = CalendarViewModel.EventRepository;
+
                 window.ShowDialog();
             });
         }

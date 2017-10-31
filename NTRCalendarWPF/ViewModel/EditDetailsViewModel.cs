@@ -14,6 +14,7 @@ namespace NTRCalendarWPF.ViewModel {
 
         public Action CloseAction { get; set; }
         public ICalendarEventRepository CalendarEventRepository { set; get; }
+        public DateTime Day { get; set; }
 
         public CalendarEvent CurrentEvent {
             get => _currentEvent;
@@ -26,8 +27,10 @@ namespace NTRCalendarWPF.ViewModel {
                 _oldEvent = value;
                 IsNewEvent = (value == null);
                 CurrentEvent = (value == null)
-                    ? new CalendarEvent()
+                    ? new CalendarEvent(Day)
                     : new CalendarEvent(value.Name, value.Start, value.End);
+                if (value != null)
+                    Day = value.Start.Date;
             }
         }
 
