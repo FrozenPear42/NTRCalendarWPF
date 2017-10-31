@@ -15,25 +15,55 @@ using NTRCalendarWPF.View;
 
 namespace NTRCalendarWPF.ViewModel {
     public class CalendarViewModel : ViewModelBase {
+        private DateTime _firstDay;
+        private bool _isPopupOpen;
+        private string _fontName;
+        private Theme _theme;
+
         public ICommand CommandNext { get; set; }
         public ICommand CommandPrevious { get; set; }
         public ICommand CommandAddEvent { get; set; }
         public ICommand CommandEditEvent { get; set; }
+        public ICommand CommandTogglePopup { get; set; }
         public IWindowService WindowService { set; get; }
-        
-        public ICalendarEventRepository EventRepository { get; private set; }
+
+        public ICalendarEventRepository EventRepository { get; }
         public ObservableCollection<string> WeekFields { get; set; }
         public ObservableCollection<CalendarEvent> Events { get; set; }
 
-        private DateTime _firstDay;
+        public List<string> Fonts { get; }
+        public List<Theme> Themes { get; }
+
+        public string FontName {
+            get => _fontName;
+            set => SetProperty(ref _fontName, value);
+        }
+
+        public Theme ColorTheme {
+            get => _theme;
+            set => SetProperty(ref _theme, value);
+        }
 
         public DateTime FirstDay {
             get => _firstDay;
             set => SetProperty(ref _firstDay, value);
         }
 
+        public bool IsPopupOpen {
+            get => _isPopupOpen;
+            set => SetProperty(ref _isPopupOpen, value);
+        }
+
         public CalendarViewModel() {
+            Themes = new List<Theme> {
+                new Theme("Blue-Green", "#CBE5E5", "#CBCBE8", "#00008f", "#008000"),
+                new Theme("Pink-Amber", "#FFC107", "#E91E63", "#ffffff", "#FFA000"),
+                new Theme("Blue-Purple", "#448AFF", "#673AB7", "#ffffff", "#7B1FA2"),
+            };
+            Fonts = new List<string>{"Courier New", "Arial", "Sans Serif"};
             WeekFields = new ObservableCollection<string> {"", "", "", ""};
+            FontName = Fonts[0];
+            ColorTheme = Themes[0];
 
             EventRepository = new FileCalendarEventRepository("calendar.dat");
             EventRepository.EventAdded += calendarEvent => Events.Add(calendarEvent);
@@ -43,12 +73,14 @@ namespace NTRCalendarWPF.ViewModel {
             };
 
             Events = new ObservableCollection<CalendarEvent>(EventRepository.GetEvents());
-            
+
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
             CommandNext = new RelayCommand(e => ChangeWeek(1));
             CommandAddEvent = new RelayCommand(e => WindowService?.ShowWindow(null));
             CommandEditEvent = new RelayCommand(e => WindowService?.ShowWindow((CalendarEvent) e));
-            
+
+            CommandTogglePopup = new RelayCommand(e => IsPopupOpen = !IsPopupOpen);
+
             var day = DateTime.Today;
             while (day.DayOfWeek != DayOfWeek.Monday) day = day.AddDays(-1);
             FirstDay = day;

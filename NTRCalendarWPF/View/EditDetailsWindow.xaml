@@ -34,7 +34,7 @@
                 <Label Content="Name" />
                 <TextBox Text="{Binding CurrentEvent.Name}" />
                 <Label Content="Description" />
-                <TextBox TextWrapping="Wrap" MinLines="4" MaxLines="4" Text="{Binding CurrentEvent.Description}" />
+                <TextBox TextWrapping="Wrap" MinLines="4" MinHeight="66" MaxHeight="66" MaxLines="4" AcceptsReturn="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Text="{Binding CurrentEvent.Description }" />
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

@@ -8,17 +8,21 @@
         Background="White" Width="1400" Height="500">
 
     <Window.DataContext>
-        <viewModel:CalendarViewModel x:Name="CalendarViewModel"/>
+        <viewModel:CalendarViewModel x:Name="CalendarViewModel" />
     </Window.DataContext>
-    
-    <Grid TextElement.FontFamily="Courier New" TextElement.FontSize="14" TextElement.Foreground="#00008F">
 
+    <Window.InputBindings>
+        <MouseBinding MouseAction="RightClick" Command="{Binding CommandTogglePopup}" />
+    </Window.InputBindings>
+
+    <Grid TextElement.FontFamily="{Binding FontName}" TextElement.FontSize="14">
         <Grid.Resources>
             <root:DayDateConverter x:Key="DayDateConverter" />
 
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="2" />
-                <Setter Property="Background" Value="#CBE5E5" />
+                <Setter Property="Background" Value="{Binding ColorTheme.ButtonColor}" />
+                <Setter Property="Foreground" Value="{Binding ColorTheme.FontColor}" />
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                 <Setter Property="VerticalAlignment" Value="Stretch" />
@@ -26,7 +30,8 @@
 
             <Style TargetType="Label">
                 <Setter Property="Margin" Value="2" />
-                <Setter Property="Background" Value="#FFCBCBE8" />
+                <Setter Property="Background" Value="{Binding ColorTheme.LabelColor}" />
+                <Setter Property="Foreground" Value="{Binding ColorTheme.FontColor}" />
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
                 <Setter Property="VerticalAlignment" Value="Stretch" />
                 <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -35,11 +40,12 @@
 
             <Style TargetType="view:DayPanel">
                 <Setter Property="Margin" Value="2" />
-                <Setter Property="EventsSource" Value="{Binding Events}"/>
-                <Setter Property="AddEvent" Value="{Binding CommandAddEvent}"/>
-                <Setter Property="EditEvent" Value="{Binding CommandEditEvent}"/>
+                <Setter Property="EventsSource" Value="{Binding Events}" />
+                <Setter Property="AddEvent" Value="{Binding CommandAddEvent}" />
+                <Setter Property="EditEvent" Value="{Binding CommandEditEvent}" />
+                <Setter Property="Accent" Value="{Binding ColorTheme.AccentColor}" />
             </Style>
-            
+
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
@@ -63,10 +69,31 @@
             <RowDefinition MinHeight="30" MaxHeight="40" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Column="0" Grid.Row="0" Command="{Binding CommandPrevious}">prev</Button>
-        <Button Grid.Column="8" Grid.Row="0" Command="{Binding CommandPrevious}">prev</Button>
-        <Button Grid.Column="0" Grid.Row="5" Command="{Binding CommandNext}">next</Button>
-        <Button Grid.Column="8" Grid.Row="5" Command="{Binding CommandNext}">next</Button>
+        <Popup Placement="Mouse" x:Name="Popup" IsOpen="{Binding IsPopupOpen}">
+            <Popup.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="Beige" />
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="BorderBrush" Value="Black" />
+                    <Setter Property="BorderThickness" Value="1" />
+                </Style>
+                <Style TargetType="Label" />
+            </Popup.Resources>
+            <Border>
+                <StackPanel>
+                    <Label Content="Color Scheme" />
+                    <ComboBox ItemsSource="{Binding Themes}" SelectedValue="{Binding ColorTheme}"
+                              DisplayMemberPath="Name" SelectedIndex="0" />
+                    <Label Content="Font" />
+                    <ComboBox ItemsSource="{Binding Fonts}" SelectedValue="{Binding FontName}" SelectedIndex="0" />
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Button Grid.Column="0" Grid.Row="0" Command="{Binding CommandPrevious}" Content="prev"/>
+        <Button Grid.Column="8" Grid.Row="0" Command="{Binding CommandPrevious}" Content="prev"/>
+        <Button Grid.Column="0" Grid.Row="5" Command="{Binding CommandNext}" Content="next"/>
+        <Button Grid.Column="8" Grid.Row="5" Command="{Binding CommandNext}" Content="next"/>
 
         <Label Grid.Column="1" Grid.Row="0" Content="Monday" />
         <Label Grid.Column="2" Grid.Row="0" Content="Tuesday" />
@@ -94,37 +121,64 @@
         <Label Grid.Column="8" Grid.Row="3" Content="{Binding WeekFields[2]}" />
         <Label Grid.Column="8" Grid.Row="4" Content="{Binding WeekFields[3]}" />
 
-        <view:DayPanel Grid.Column="1" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=0}"/>
-        <view:DayPanel Grid.Column="2" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=1}"/>
-        <view:DayPanel Grid.Column="3" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=2}"/>
-        <view:DayPanel Grid.Column="4" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=3}"/>
-        <view:DayPanel Grid.Column="5" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=4}"/>
-        <view:DayPanel Grid.Column="6" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=5}"/>
-        <view:DayPanel Grid.Column="7" Grid.Row="1" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=6}"/>
-       
-        <view:DayPanel Grid.Column="1" Grid.Row="2" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=7}"/>
-        <view:DayPanel Grid.Column="2" Grid.Row="2" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=8}"/>
-        <view:DayPanel Grid.Column="3" Grid.Row="2" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=9}"/>
-        <view:DayPanel Grid.Column="4" Grid.Row="2" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=10}"/>
-        <view:DayPanel Grid.Column="5" Grid.Row="2" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=11}"/>
-        <view:DayPanel Grid.Column="6" Grid.Row="2" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=12}"/>
-        <view:DayPanel Grid.Column="7" Grid.Row="2" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=13}"/>
+        <view:DayPanel Grid.Column="1" Grid.Row="1"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=0}" />
+        <view:DayPanel Grid.Column="2" Grid.Row="1"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=1}" />
+        <view:DayPanel Grid.Column="3" Grid.Row="1"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=2}" />
+        <view:DayPanel Grid.Column="4" Grid.Row="1"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=3}" />
+        <view:DayPanel Grid.Column="5" Grid.Row="1"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=4}" />
+        <view:DayPanel Grid.Column="6" Grid.Row="1"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=5}" />
+        <view:DayPanel Grid.Column="7" Grid.Row="1"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=6}" />
 
-        <view:DayPanel Grid.Column="1" Grid.Row="3" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=14}"/>
-        <view:DayPanel Grid.Column="2" Grid.Row="3" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=15}"/>
-        <view:DayPanel Grid.Column="3" Grid.Row="3" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=16}"/>
-        <view:DayPanel Grid.Column="4" Grid.Row="3" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=17}"/>
-        <view:DayPanel Grid.Column="5" Grid.Row="3" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=18}"/>
-        <view:DayPanel Grid.Column="6" Grid.Row="3" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=19}"/>
-        <view:DayPanel Grid.Column="7" Grid.Row="3" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=20}"/>
+        <view:DayPanel Grid.Column="1" Grid.Row="2"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=7}" />
+        <view:DayPanel Grid.Column="2" Grid.Row="2"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=8}" />
+        <view:DayPanel Grid.Column="3" Grid.Row="2"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=9}" />
+        <view:DayPanel Grid.Column="4" Grid.Row="2"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=10}" />
+        <view:DayPanel Grid.Column="5" Grid.Row="2"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=11}" />
+        <view:DayPanel Grid.Column="6" Grid.Row="2"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=12}" />
+        <view:DayPanel Grid.Column="7" Grid.Row="2"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=13}" />
 
-        <view:DayPanel Grid.Column="1" Grid.Row="4" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=21}"/>
-        <view:DayPanel Grid.Column="2" Grid.Row="4" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=22}"/>
-        <view:DayPanel Grid.Column="3" Grid.Row="4" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=23}"/>
-        <view:DayPanel Grid.Column="4" Grid.Row="4" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=24}"/>
-        <view:DayPanel Grid.Column="5" Grid.Row="4" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=25}"/>
-        <view:DayPanel Grid.Column="6" Grid.Row="4" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=26}"/>
-        <view:DayPanel Grid.Column="7" Grid.Row="4" Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=27}"/>
+        <view:DayPanel Grid.Column="1" Grid.Row="3"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=14}" />
+        <view:DayPanel Grid.Column="2" Grid.Row="3"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=15}" />
+        <view:DayPanel Grid.Column="3" Grid.Row="3"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=16}" />
+        <view:DayPanel Grid.Column="4" Grid.Row="3"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=17}" />
+        <view:DayPanel Grid.Column="5" Grid.Row="3"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=18}" />
+        <view:DayPanel Grid.Column="6" Grid.Row="3"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=19}" />
+        <view:DayPanel Grid.Column="7" Grid.Row="3"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=20}" />
 
+        <view:DayPanel Grid.Column="1" Grid.Row="4"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=21}" />
+        <view:DayPanel Grid.Column="2" Grid.Row="4"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=22}" />
+        <view:DayPanel Grid.Column="3" Grid.Row="4"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=23}" />
+        <view:DayPanel Grid.Column="4" Grid.Row="4"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=24}" />
+        <view:DayPanel Grid.Column="5" Grid.Row="4"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=25}" />
+        <view:DayPanel Grid.Column="6" Grid.Row="4"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=26}" />
+        <view:DayPanel Grid.Column="7" Grid.Row="4"
+                       Day="{Binding FirstDay, Converter={StaticResource DayDateConverter}, ConverterParameter=27}" />
     </Grid>
 </Window>

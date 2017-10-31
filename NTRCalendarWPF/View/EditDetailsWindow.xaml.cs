@@ -12,15 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace NTRCalendarWPF.View
-{
-    /// <summary>
-    /// Interaction logic for EditDetailsWindow.xaml
-    /// </summary>
-    public partial class EditDetailsWindow : Window
-    {
-        public EditDetailsWindow()
-        {
+namespace NTRCalendarWPF.View {
+    public partial class EditDetailsWindow : Window {
+        public EditDetailsWindow() {
             InitializeComponent();
             EditDetailsViewModel.CloseAction = () => {
                 DialogResult = true;

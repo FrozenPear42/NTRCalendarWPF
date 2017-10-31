@@ -5,18 +5,20 @@
              x:Name="Root">
 
     <Border CornerRadius="2" BorderBrush="Black" BorderThickness="2" x:Name="DayPanelRoot">
-        <Border.Resources>
-            <Style TargetType="Label">
-                <Setter Property="Background" Value="White" />
-                <Setter Property="FontSize" Value="12" />
-            </Style>
-        </Border.Resources>
 
         <Border.DataContext>
             <viewModel:DayPanelViewModel />
         </Border.DataContext>
 
-        <Grid Background="White">
+        <Border.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Background" Value="{Binding Path=Background, ElementName=Root}" />
+                <Setter Property="Foreground" Value="{Binding Path=Foreground, ElementName=Root}" />
+                <Setter Property="FontSize" Value="12" />
+            </Style>
+        </Border.Resources>
+
+        <Grid Background="{Binding Path=Background, ElementName=Root}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -24,17 +26,20 @@
             <Border Grid.Row="0" CornerRadius="1" BorderBrush="Black" BorderThickness="1">
                 <Label Content="{Binding Title}" />
             </Border>
+            <!--            TODO: BGColor cause panel to stretch -->
             <StackPanel Grid.Row="1" VerticalAlignment="Stretch" Background="White">
                 <StackPanel.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=AddEvent, ElementName=Root}" CommandParameter="{Binding Day}" />
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=AddEvent, ElementName=Root}"
+                                  CommandParameter="{Binding Day}" />
                 </StackPanel.InputBindings>
                 <ItemsControl ItemsSource="{Binding Events}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="#008080" BorderThickness="1" CornerRadius="1">
+                            <Border BorderBrush="{Binding Path=Accent, ElementName=Root}" BorderThickness="1"
+                                    CornerRadius="1">
                                 <Border.Resources>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#008080" />
+                                        <Setter Property="Foreground" Value="{Binding Path=Accent, ElementName=Root}" />
                                     </Style>
                                 </Border.Resources>
                                 <Border.InputBindings>
@@ -42,13 +47,11 @@
                                                   Command="{Binding Path=EditEvent, ElementName=Root}"
                                                   CommandParameter="{Binding}" />
                                 </Border.InputBindings>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>
-                                        <Run Text="{Binding Start, StringFormat={}{0:HH:mm}\ -}" />
-                                        <Run Text="{Binding End, StringFormat={}{0:HH:mm}}" />
-                                        <Run Text="{Binding Name}" />
-                                    </TextBlock>
-                                </StackPanel>
+                                <TextBlock>
+                                    <Run Text="{Binding Start, StringFormat={}{0:HH:mm}\ -}" />
+                                    <Run Text="{Binding End, StringFormat={}{0:HH:mm}}" />
+                                    <Run Text="{Binding Name}" />
+                                </TextBlock>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
