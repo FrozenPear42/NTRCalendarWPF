@@ -17,6 +17,7 @@ namespace NTRCalendarWPF.ViewModel {
         private ObservableCollection<CalendarEvent> _events;
         private DateTime _day;
         private string _title;
+        private bool _isToday;
 
         public ObservableCollection<CalendarEvent> EventsSource {
             get => _eventsSource;
@@ -37,6 +38,7 @@ namespace NTRCalendarWPF.ViewModel {
             set {
                 SetProperty(ref _day, value);
                 Title = value.ToString("dd MMMM");
+                IsToday = value.Equals(DateTime.Today);
                 UpdateEvents();
             }
         }
@@ -44,6 +46,11 @@ namespace NTRCalendarWPF.ViewModel {
         public string Title {
             get => _title;
             set => SetProperty(ref _title, value);
+        }
+
+        public bool IsToday {
+            get => _isToday;
+            private set => SetProperty(ref _isToday, value);
         }
 
         private void UpdateEvents() {

@@ -40,7 +40,10 @@ namespace NTRCalendarWPF.View {
             DependencyProperty.Register("AddEvent", typeof(ICommand), typeof(DayPanel), new PropertyMetadata(null));
 
         public static readonly DependencyProperty AccentProperty =
-            DependencyProperty.Register("Accent", typeof(Brush), typeof(DayPanel), new PropertyMetadata(null));
+            DependencyProperty.Register("Accent", typeof(Brush), typeof(DayPanel), new PropertyMetadata(Brushes.Black));
+
+        public static readonly DependencyProperty SpecialAccentProperty =
+            DependencyProperty.Register("SpecialAccent", typeof(Brush), typeof(DayPanel), new PropertyMetadata(Brushes.Red));
 
         public ObservableCollection<CalendarEvent> EventsSource {
             get => (ObservableCollection<CalendarEvent>) GetValue(EventsSourceProperty);
@@ -65,6 +68,11 @@ namespace NTRCalendarWPF.View {
         public Brush Accent {
             get => (Brush) GetValue(AccentProperty);
             set => SetValue(AccentProperty, value);
+        }
+
+        public Brush SpecialAccent {
+            get => (Brush) GetValue(SpecialAccentProperty);
+            set => SetValue(SpecialAccentProperty, value);
         }
 
         public DayPanel() {

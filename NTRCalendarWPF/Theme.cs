@@ -13,13 +13,15 @@ namespace NTRCalendarWPF {
         public string LabelColor { get; }
         public string FontColor { get; }
         public string AccentColor { get; }
+        public string SpecialAccentColor { get; }
 
-        public Theme(string name, string buttonColor, string labelColor, string fontColor, string accentColor) {
+        public Theme(string name, string buttonColor, string labelColor, string fontColor, string accentColor, string specialAccentColor) {
             Name = name;
             ButtonColor = buttonColor;
             LabelColor = labelColor;
             FontColor = fontColor;
             AccentColor = accentColor;
+            SpecialAccentColor = specialAccentColor;
         }
     }
 }

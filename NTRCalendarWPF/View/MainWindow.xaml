@@ -14,7 +14,7 @@
     <Window.InputBindings>
         <MouseBinding MouseAction="RightClick" Command="{Binding CommandTogglePopup}" />
     </Window.InputBindings>
-
+    
     <Grid TextElement.FontFamily="{Binding FontName}" TextElement.FontSize="14">
         <Grid.Resources>
             <root:DayDateConverter x:Key="DayDateConverter" />
@@ -44,6 +44,7 @@
                 <Setter Property="AddEvent" Value="{Binding CommandAddEvent}" />
                 <Setter Property="EditEvent" Value="{Binding CommandEditEvent}" />
                 <Setter Property="Accent" Value="{Binding ColorTheme.AccentColor}" />
+                <Setter Property="SpecialAccent" Value="{Binding ColorTheme.SpecialAccentColor}" />
             </Style>
 
         </Grid.Resources>

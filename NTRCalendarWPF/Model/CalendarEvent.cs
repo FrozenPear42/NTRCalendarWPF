@@ -13,8 +13,9 @@ namespace NTRCalendarWPF.Model {
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
-        public CalendarEvent(string name, DateTime start, DateTime end) {
+        public CalendarEvent(string name, string description, DateTime start, DateTime end) {
             Name = name;
+            Description = description;
             Start = start;
             End = end;
         }
@@ -28,6 +29,7 @@ namespace NTRCalendarWPF.Model {
 
         public CalendarEvent(DateTime day) {
             Name = "";
+            Description = "";
             Start = day;
             End = day;
         }

@@ -28,7 +28,7 @@ namespace NTRCalendarWPF.ViewModel {
                 IsNewEvent = (value == null);
                 CurrentEvent = (value == null)
                     ? new CalendarEvent(Day)
-                    : new CalendarEvent(value.Name, value.Start, value.End);
+                    : new CalendarEvent(value.Name, value.Description, value.Start, value.End);
                 if (value != null)
                     Day = value.Start.Date;
             }
