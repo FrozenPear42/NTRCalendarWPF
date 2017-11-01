@@ -62,7 +62,6 @@ namespace NTRCalendarWPF.ViewModel {
                 if (result < 0 || result > 59) return;
 
                 var time = new TimeSpan(Time.Hours, result, 0);
-                Console.Out.WriteLine(MinTime + " " + MaxTime);
 //                if (TimeSpan.Compare(MinTime, time) > 0 || TimeSpan.Compare(time, MaxTime) > 0) return;
                 if (time != _time)
                     Time = time;

@@ -9,12 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using log4net.Config;
 using NTRCalendarWPF.Annotations;
 using NTRCalendarWPF.Model;
 using NTRCalendarWPF.View;
 
 namespace NTRCalendarWPF.ViewModel {
     public class CalendarViewModel : ViewModelBase {
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private DateTime _firstDay;
         private bool _isPopupOpen;
         private string _fontName;
@@ -55,12 +59,13 @@ namespace NTRCalendarWPF.ViewModel {
         }
 
         public CalendarViewModel() {
+
             Themes = new List<Theme> {
                 new Theme("Blue-Green", "#CBE5E5", "#CBCBE8", "#00008f", "#008000", "#009688"),
                 new Theme("Pink-Amber", "#FFC107", "#E91E63", "#ffffff", "#FFA000", "#FF5722"),
                 new Theme("Blue-Purple", "#448AFF", "#673AB7", "#ffffff", "#7B1FA2", "#E040FB"),
             };
-            Fonts = new List<string>{"Courier New", "Arial", "Sans Serif"};
+            Fonts = new List<string> {"Courier New", "Arial", "Sans Serif"};
             WeekFields = new ObservableCollection<string> {"", "", "", ""};
             FontName = Fonts[0];
             ColorTheme = Themes[0];
@@ -76,7 +81,7 @@ namespace NTRCalendarWPF.ViewModel {
 
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
             CommandNext = new RelayCommand(e => ChangeWeek(1));
-            CommandAddEvent = new RelayCommand(e => WindowService?.ShowWindow((DateTime)e));
+            CommandAddEvent = new RelayCommand(e => WindowService?.ShowWindow((DateTime) e));
             CommandEditEvent = new RelayCommand(e => WindowService?.ShowWindow((CalendarEvent) e));
 
             CommandTogglePopup = new RelayCommand(e => IsPopupOpen = !IsPopupOpen);
@@ -84,6 +89,9 @@ namespace NTRCalendarWPF.ViewModel {
             var day = DateTime.Today;
             while (day.DayOfWeek != DayOfWeek.Monday) day = day.AddDays(-1);
             FirstDay = day;
+
+            log.InfoFormat("App started today({0}) with first day of week {1} in week {2}", DateTime.Now, _firstDay, new GregorianCalendar().GetWeekOfYear(day, CalendarWeekRule.FirstDay, DayOfWeek.Monday));
+
 
             UpdateView();
         }
@@ -101,7 +109,6 @@ namespace NTRCalendarWPF.ViewModel {
 
         private void ChangeWeek(int direction) {
             FirstDay = FirstDay.AddDays(7 * direction);
-
             UpdateView();
         }
     }
