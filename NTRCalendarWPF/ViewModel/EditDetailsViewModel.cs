@@ -10,15 +10,39 @@ namespace NTRCalendarWPF.ViewModel {
     public class EditDetailsViewModel : ViewModelBase {
         private CalendarEvent _oldEvent;
         private CalendarEvent _currentEvent;
+        private TimeSpan _startTime;
+        private TimeSpan _endTime;
         private bool _isNewEvent;
+
 
         public Action CloseAction { get; set; }
         public ICalendarEventRepository CalendarEventRepository { set; get; }
         public DateTime Day { get; set; }
 
+        public TimeSpan StartTime {
+            get => _startTime;
+            set {
+                SetProperty(ref _startTime, value);
+                CurrentEvent.Start = Day.Add(value);
+            }
+        }
+
+        public TimeSpan EndTime {
+            get => _endTime;
+            set {
+                SetProperty(ref _endTime, value);
+                CurrentEvent.End = Day.Add(value);
+            }
+        }
+
+
         public CalendarEvent CurrentEvent {
             get => _currentEvent;
-            set => SetProperty(ref _currentEvent, value);
+            set {
+                SetProperty(ref _currentEvent, value);
+                StartTime = value.Start.TimeOfDay;
+                EndTime = value.End.TimeOfDay;
+            }
         }
 
         public CalendarEvent OldEvent {
@@ -26,11 +50,11 @@ namespace NTRCalendarWPF.ViewModel {
             set {
                 _oldEvent = value;
                 IsNewEvent = (value == null);
+                if (value != null)
+                    Day = value.Start.Date;
                 CurrentEvent = (value == null)
                     ? new CalendarEvent(Day)
                     : new CalendarEvent(value.Name, value.Description, value.Start, value.End);
-                if (value != null)
-                    Day = value.Start.Date;
             }
         }
 

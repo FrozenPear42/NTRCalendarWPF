@@ -11,7 +11,7 @@ using Microsoft.Win32;
 
 namespace NTRCalendarWPF.Model {
     public class FileCalendarEventRepository : ICalendarEventRepository {
-        public string FileName { get; private set; }
+        public string FileName { get; }
         private List<CalendarEvent> CalendarEvents { get; set; }
 
         public FileCalendarEventRepository(string fileName) {
@@ -25,6 +25,7 @@ namespace NTRCalendarWPF.Model {
         public event RepositoryReplaceDelegate EventReplaced;
 
         public bool AddEvent(CalendarEvent calendarEvent) {
+            Console.Out.WriteLine(calendarEvent);
             CalendarEvents.Add(calendarEvent);
             SaveFile();
             EventAdded?.Invoke(calendarEvent);
@@ -39,6 +40,8 @@ namespace NTRCalendarWPF.Model {
         }
 
         public bool ReplaceEvent(CalendarEvent oldEvent, CalendarEvent newEvent) {
+            Console.Out.WriteLine(newEvent);
+
             if (!CalendarEvents.Remove(oldEvent)) return false;
             CalendarEvents.Add(newEvent);
             SaveFile();

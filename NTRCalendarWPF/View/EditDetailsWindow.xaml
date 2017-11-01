@@ -5,15 +5,15 @@
         xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel"
         xmlns:local="clr-namespace:NTRCalendarWPF"
         Title="Edit Details"
-        Width="200" Height="345">
-    
+        Width="200" Height="360">
+
     <Window.DataContext>
-        <viewModel:EditDetailsViewModel x:Name="EditDetailsViewModel"/>
+        <viewModel:EditDetailsViewModel x:Name="EditDetailsViewModel" />
     </Window.DataContext>
     <Window.Resources>
         <local:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </Window.Resources>
-    
+
     <StackPanel VerticalAlignment="Top">
         <StackPanel.Resources>
             <Style TargetType="Button">
@@ -24,9 +24,9 @@
         <GroupBox Header="Time">
             <StackPanel>
                 <Label Content="From" />
-                <view:TimePicker Value="{Binding CurrentEvent.Start}" />
+                <view:TimePicker Value="{Binding StartTime}" MaxTime="{Binding EndTime}"/>
                 <Label Content="To" />
-                <view:TimePicker Value="{Binding CurrentEvent.Start}"/>
+                <view:TimePicker Value="{Binding EndTime}" MinTime="{Binding StartTime}" />
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Details">
@@ -34,11 +34,15 @@
                 <Label Content="Name" />
                 <TextBox Text="{Binding CurrentEvent.Name}" />
                 <Label Content="Description" />
-                <TextBox TextWrapping="Wrap" MinLines="4" MinHeight="66" MaxHeight="66" MaxLines="4" AcceptsReturn="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Text="{Binding CurrentEvent.Description }" />
+                <TextBox TextWrapping="Wrap" MinLines="4" MinHeight="66" MaxHeight="66" MaxLines="4"
+                         AcceptsReturn="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto"
+                         Text="{Binding CurrentEvent.Description }" />
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Remove" IsEnabled="{Binding IsNewEvent, Converter={StaticResource InvertBooleanConverter}}" Command="{Binding CommandRemove}" />
+            <Button Content="Remove"
+                    IsEnabled="{Binding IsNewEvent, Converter={StaticResource InvertBooleanConverter}}"
+                    Command="{Binding CommandRemove}" />
             <Button Content="Cancel" Command="{Binding CommandCancel}" />
             <Button Content="Save" Command="{Binding CommandSave}" />
         </StackPanel>

@@ -16,6 +16,12 @@ namespace NTRCalendarWPF {
             OnPropertyChanged(propertyName);
         }
 
+        protected virtual void ForceSetProperty<T>(ref T member, T val, [CallerMemberName] string propertyName = "") {
+            member = val;
+            OnPropertyChanged(propertyName);
+        }
+
+
         protected virtual void OnPropertyChanged(string propertyName) {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }

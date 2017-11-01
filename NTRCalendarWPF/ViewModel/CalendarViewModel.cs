@@ -56,7 +56,7 @@ namespace NTRCalendarWPF.ViewModel {
 
         public CalendarViewModel() {
             Themes = new List<Theme> {
-                new Theme("Blue-Green", "#CBE5E5", "#CBCBE8", "#00008f", "#000000", "#009688"),
+                new Theme("Blue-Green", "#CBE5E5", "#CBCBE8", "#00008f", "#008000", "#009688"),
                 new Theme("Pink-Amber", "#FFC107", "#E91E63", "#ffffff", "#FFA000", "#FF5722"),
                 new Theme("Blue-Purple", "#448AFF", "#673AB7", "#ffffff", "#7B1FA2", "#E040FB"),
             };
