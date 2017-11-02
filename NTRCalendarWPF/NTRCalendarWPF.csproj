@@ -62,6 +62,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DayDateConverter.cs" />
+    <Compile Include="FontSizeConverter.cs" />
     <Compile Include="InvertBooleanConverter.cs" />
     <Compile Include="IWindowService.cs" />
     <Compile Include="Model\CalendarEvent.cs" />
