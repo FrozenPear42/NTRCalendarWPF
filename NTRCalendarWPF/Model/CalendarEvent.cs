@@ -32,6 +32,7 @@ namespace NTRCalendarWPF.Model {
             Description = "";
             Start = day;
             End = day;
+            
         }
 
         public override string ToString() {
