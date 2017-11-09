@@ -31,7 +31,7 @@ namespace NTRCalendarWPF.ViewModel {
         public ICommand CommandTogglePopup { get; set; }
         public IWindowService WindowService { set; get; }
 
-        public ICalendarEventRepository EventRepository { get; }
+        public ICalendarEventRepository EventRepository { get; set; }
         public ObservableCollection<string> WeekFields { get; set; }
         public ObservableCollection<CalendarEvent> Events { get; set; }
 

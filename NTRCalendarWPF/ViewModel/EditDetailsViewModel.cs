@@ -14,7 +14,6 @@ namespace NTRCalendarWPF.ViewModel {
         private TimeSpan _endTime;
         private bool _isNewEvent;
 
-
         public Action CloseAction { get; set; }
         public ICalendarEventRepository CalendarEventRepository { set; get; }
         public DateTime Day { get; set; }
@@ -34,8 +33,7 @@ namespace NTRCalendarWPF.ViewModel {
                 CurrentEvent.End = Day.Add(value);
             }
         }
-
-
+        
         public CalendarEvent CurrentEvent {
             get => _currentEvent;
             set {
