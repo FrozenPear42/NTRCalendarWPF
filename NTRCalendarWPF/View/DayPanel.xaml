@@ -11,10 +11,13 @@
         </Border.DataContext>
 
         <Border.Resources>
+            <Style TargetType="Grid">
+                <Setter Property="TextElement.FontFamily" Value="{Binding FontFamily, ElementName=Root}"/>
+                <Setter Property="TextElement.FontSize" Value="{Binding FontSize, ElementName=Root}" />
+            </Style>
             <Style TargetType="Label">
                 <Setter Property="Background" Value="{Binding Path=Background, ElementName=Root}" />
                 <Setter Property="Foreground" Value="{Binding Path=Foreground, ElementName=Root}" />
-                <Setter Property="FontSize" Value="12" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsToday}" Value="True">
                         <Setter Property="Foreground" Value="{Binding Path=SpecialAccent, ElementName=Root}" />
