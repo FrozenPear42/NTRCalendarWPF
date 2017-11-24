@@ -8,4 +8,5 @@
         <viewModel:EditDetailsViewModel x:Key="EditDetailsViewModel" />
         <viewModel:DayPanelViewModel x:Key="DayPanelViewModel" />
     </Application.Resources>
+    
 </Application>
