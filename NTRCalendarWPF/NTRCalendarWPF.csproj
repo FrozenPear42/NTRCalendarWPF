@@ -53,6 +53,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -77,13 +83,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DayDateConverter.cs" />
-    <Compile Include="FontSizeConverter.cs" />
-    <Compile Include="InvertBooleanConverter.cs" />
-    <Compile Include="IWindowService.cs" />
+    <Compile Include="Helpers\DayDateConverter.cs" />
+    <Compile Include="Helpers\FontSizeConverter.cs" />
+    <Compile Include="Helpers\IEnvironmentService.cs" />
+    <Compile Include="Helpers\InvertBooleanConverter.cs" />
+    <Compile Include="Helpers\IWindowService.cs" />
+    <Compile Include="Helpers\ProductionEnvironmentService.cs" />
+    <Compile Include="Helpers\WindowService.cs" />
+    <Compile Include="Model\Appointment.cs" />
+    <Compile Include="Model\Attendance.cs" />
     <Compile Include="Model\CalendarEvent.cs" />
+    <Compile Include="Model\DatabaseCalendarEventRepository.cs" />
     <Compile Include="Model\FileCalendarEventRepository.cs" />
     <Compile Include="Model\ICalendarEventRepository.cs" />
+    <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\CalendarRepository.cs" />
+    <Compile Include="Model\StorageContext.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModel\DayPanelViewModel.cs" />
@@ -91,7 +106,6 @@
     <Compile Include="View\TimePicker.xaml.cs">
       <DependentUpon>TimePicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowService.cs" />
     <Page Include="View\DayPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
