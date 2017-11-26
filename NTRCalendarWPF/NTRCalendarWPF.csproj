@@ -91,6 +91,23 @@
     <Compile Include="Helpers\IWindowService.cs" />
     <Compile Include="Helpers\ProductionEnvironmentService.cs" />
     <Compile Include="Helpers\WindowService.cs" />
+    <Compile Include="Migrations\201711261831351_InitialCreate.cs" />
+    <Compile Include="Migrations\201711261831351_InitialCreate.Designer.cs">
+      <DependentUpon>201711261831351_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711262152338_FieldSizeAndDate.cs" />
+    <Compile Include="Migrations\201711262152338_FieldSizeAndDate.Designer.cs">
+      <DependentUpon>201711262152338_FieldSizeAndDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711262209344_SpellingAndTypes.cs" />
+    <Compile Include="Migrations\201711262209344_SpellingAndTypes.Designer.cs">
+      <DependentUpon>201711262209344_SpellingAndTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711262215269_Spelling.cs" />
+    <Compile Include="Migrations\201711262215269_Spelling.Designer.cs">
+      <DependentUpon>201711262215269_Spelling.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Appointment.cs" />
     <Compile Include="Model\Attendance.cs" />
     <Compile Include="Model\CalendarEvent.cs" />
@@ -155,6 +172,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\201711261831351_InitialCreate.resx">
+      <DependentUpon>201711261831351_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711262152338_FieldSizeAndDate.resx">
+      <DependentUpon>201711262152338_FieldSizeAndDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711262209344_SpellingAndTypes.resx">
+      <DependentUpon>201711262209344_SpellingAndTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711262215269_Spelling.resx">
+      <DependentUpon>201711262215269_Spelling.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

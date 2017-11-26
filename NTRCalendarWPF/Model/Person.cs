@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NTRCalendarWPF.Model {
     public class Person {
-        [Key]
-        public Guid PersonId { get; set; }
+        [Key, Column("PersonID")]
+        public Guid PersonID { get; set; }
         [MaxLength(16)]
         [Required]
         public string FirstName { get; set; }

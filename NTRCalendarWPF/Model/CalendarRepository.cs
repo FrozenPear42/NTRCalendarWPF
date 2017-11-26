@@ -36,7 +36,7 @@ namespace NTRCalendarWPF.Model {
                 FirstName = firstName,
                 LastName = lastName,
                 UserID = userID,
-                PersonId = Guid.NewGuid()
+                PersonID = Guid.NewGuid()
             };
             using (var db = new StorageContext()) {
                 db.People.Add(person);
@@ -50,7 +50,7 @@ namespace NTRCalendarWPF.Model {
                 Title = title,
                 StartTime = start.TimeOfDay,
                 EndTime = end.TimeOfDay,
-                AppointmentId = Guid.NewGuid()
+                AppointmentID = Guid.NewGuid()
             };
             var attendance = new Attendance {
                 Appointment = appointment,

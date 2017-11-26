@@ -17,6 +17,6 @@ namespace NTRCalendarWPF.Model {
 
         public virtual Person Person { get; set; }
 
-        //        public bool Accepted { get; set; }       TODO: MIGRATION
+//        public bool Accepted { get; set; }
     }
 }
