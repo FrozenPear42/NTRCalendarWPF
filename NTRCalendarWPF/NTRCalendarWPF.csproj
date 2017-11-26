@@ -64,6 +64,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -93,7 +94,6 @@
     <Compile Include="Model\Appointment.cs" />
     <Compile Include="Model\Attendance.cs" />
     <Compile Include="Model\CalendarEvent.cs" />
-    <Compile Include="Model\DatabaseCalendarEventRepository.cs" />
     <Compile Include="Model\FileCalendarEventRepository.cs" />
     <Compile Include="Model\ICalendarEventRepository.cs" />
     <Compile Include="Model\Person.cs" />

@@ -82,9 +82,11 @@ namespace NTRCalendarWPF.ViewModel {
 
             EnvironmentService = new ProductionEnvironmentService();
             CalendarRepository = new CalendarRepository();
-            var userID = EnvironmentService.GetCommandlineArguments().First();
-
-            log.Info(userID);
+            CalendarRepository.AddPerson("asd", "fgh", "ala");
+            var people = CalendarRepository.GetPeople();
+//            var userID = EnvironmentService.GetCommandlineArguments().ToArray()[1];
+//            log.InfoFormat("running with user ID: {0}", userID);
+            
 //            var person = CalendarRepository.GetPersonByUserID(userID) ?? CalendarRepository.AddPerson("", "", userID);
             
             Events = new ObservableCollection<CalendarEvent>(EventRepository.GetEvents());

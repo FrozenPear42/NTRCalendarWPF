@@ -48,8 +48,8 @@ namespace NTRCalendarWPF.Model {
         public void AddAppointment(string userID, string title, DateTime start, DateTime end) {
             var appointment = new Appointment {
                 Title = title,
-                StartTime = start,
-                EndTime = end,
+                StartTime = start.TimeOfDay,
+                EndTime = end.TimeOfDay,
                 AppointmentId = Guid.NewGuid()
             };
             var attendance = new Attendance {
