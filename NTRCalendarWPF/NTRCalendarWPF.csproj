@@ -89,6 +89,7 @@
     <Compile Include="Helpers\IEnvironmentService.cs" />
     <Compile Include="Helpers\InvertBooleanConverter.cs" />
     <Compile Include="Helpers\IWindowService.cs" />
+    <Compile Include="Helpers\Mock\NewUserEnv.cs" />
     <Compile Include="Helpers\ProductionEnvironmentService.cs" />
     <Compile Include="Helpers\WindowService.cs" />
     <Compile Include="Migrations\201711261831351_InitialCreate.cs" />
@@ -106,6 +107,10 @@
     <Compile Include="Migrations\201711262215269_Spelling.cs" />
     <Compile Include="Migrations\201711262215269_Spelling.Designer.cs">
       <DependentUpon>201711262215269_Spelling.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711262252262_UniqueUserID.cs" />
+    <Compile Include="Migrations\201711262252262_UniqueUserID.Designer.cs">
+      <DependentUpon>201711262252262_UniqueUserID.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Appointment.cs" />
@@ -183,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711262215269_Spelling.resx">
       <DependentUpon>201711262215269_Spelling.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711262252262_UniqueUserID.resx">
+      <DependentUpon>201711262252262_UniqueUserID.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

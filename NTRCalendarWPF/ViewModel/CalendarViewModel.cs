@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Input;
-using log4net.Config;
-using log4net.Repository.Hierarchy;
-using NTRCalendarWPF.Annotations;
 using NTRCalendarWPF.Helpers;
+using NTRCalendarWPF.Helpers.Mock;
 using NTRCalendarWPF.Model;
-using NTRCalendarWPF.View;
 
 namespace NTRCalendarWPF.ViewModel {
     public class CalendarViewModel : ViewModelBase {
@@ -25,6 +17,8 @@ namespace NTRCalendarWPF.ViewModel {
         private bool _isPopupOpen;
         private string _fontName;
         private Theme _theme;
+        private Person _person;
+
 
         public ICommand CommandNext { get; set; }
         public ICommand CommandPrevious { get; set; }
@@ -33,11 +27,13 @@ namespace NTRCalendarWPF.ViewModel {
         public ICommand CommandTogglePopup { get; set; }
         public IWindowService WindowService { set; private get; }
         public IEnvironmentService EnvironmentService { set; private get; }
+        public Action CloseAction { get; set; }
 
-        public ICalendarEventRepository EventRepository { get; set; }
+
         public CalendarRepository CalendarRepository { get; set; }
+        public ICalendarEventRepository EventRepository { get; set; }
         public ObservableCollection<string> WeekFields { get; set; }
-        public ObservableCollection<CalendarEvent> Events { get; set; }
+        public ObservableCollection<Appointment> Events { get; set; }
 
         public List<string> Fonts { get; }
         public List<Theme> Themes { get; }
@@ -73,29 +69,20 @@ namespace NTRCalendarWPF.ViewModel {
             FontName = Fonts[0];
             ColorTheme = Themes[0];
 
-            EventRepository = new FileCalendarEventRepository("calendar.dat");
-            EventRepository.EventAdded += calendarEvent => Events.Add(calendarEvent);
-            EventRepository.EventRemoved += calendarEvent => Events.Remove(calendarEvent);
-            EventRepository.EventReplaced += (oldEvent, newEvent) => {
-                if (Events.Remove(oldEvent)) Events.Add(newEvent);
-            };
-
-            EnvironmentService = new ProductionEnvironmentService();
+            EnvironmentService = new NewUserEnv(new[] {"agruszka", "Andrzej", "Gruszka"});
             CalendarRepository = new CalendarRepository();
-            CalendarRepository.AddPerson("asd", "fgh", "ala");
-            var people = CalendarRepository.GetPeople();
-//            var userID = EnvironmentService.GetCommandlineArguments().ToArray()[1];
-//            log.InfoFormat("running with user ID: {0}", userID);
-            
-//            var person = CalendarRepository.GetPersonByUserID(userID) ?? CalendarRepository.AddPerson("", "", userID);
-            
-            Events = new ObservableCollection<CalendarEvent>(EventRepository.GetEvents());
+            EventRepository = new FileCalendarEventRepository("asd.dat");
+            ParseArgs();
+
+            Events = new ObservableCollection<Appointment>(EventRepository.GetEvents());
+            EventRepository.EventRepositoryChanged += () => {
+                Events = new ObservableCollection<Appointment>(EventRepository.GetEvents());
+            };
 
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
             CommandNext = new RelayCommand(e => ChangeWeek(1));
             CommandAddEvent = new RelayCommand(e => WindowService?.ShowWindow((DateTime) e));
-            CommandEditEvent = new RelayCommand(e => WindowService?.ShowWindow((CalendarEvent) e));
-
+            CommandEditEvent = new RelayCommand(e => WindowService?.ShowWindow((Appointment) e));
             CommandTogglePopup = new RelayCommand(e => IsPopupOpen = !IsPopupOpen);
 
             var day = DateTime.Today;
@@ -106,6 +93,40 @@ namespace NTRCalendarWPF.ViewModel {
                 new GregorianCalendar().GetWeekOfYear(day, CalendarWeekRule.FirstDay, DayOfWeek.Monday));
 
             UpdateWeeks();
+        }
+
+        private void ParseArgs() {
+            var args = EnvironmentService.GetCommandlineArguments().ToArray();
+            var argsCount = args.Length;
+
+            if (argsCount == 2) {
+                var userID = args[1];
+                _person = CalendarRepository.GetPersonByUserID(userID);
+                if (_person == null) {
+                    Console.Out.WriteLine(
+                        "UserID not found, use for creation: Calendar <userID> <firstName> <secondName>");
+                    CloseAction?.Invoke();
+                }
+                log.InfoFormat("Running with user ID: {0}", userID);
+            }
+            else if (argsCount == 4) {
+                var userID = args[1];
+                var firstName = args[2];
+                var lastName = args[3];
+                try {
+                    _person = CalendarRepository.AddPerson(firstName, lastName, userID);
+                    log.InfoFormat("Created User {1} {2} with UserID: {0}", userID, firstName, lastName);
+                }
+                catch (Exception) {
+                    Console.Out.WriteLine("UserID already exists");
+                    log.InfoFormat("Username {0} exists, using it", userID);
+                    _person = CalendarRepository.GetPersonByUserID(userID);
+                }
+            }
+            else {
+                Console.Out.WriteLine("Usage: Calendar <userID> || Calendar <userID> <firstName> <secondName>");
+                CloseAction?.Invoke();
+            }
         }
 
         private void ChangeWeek(int direction) {

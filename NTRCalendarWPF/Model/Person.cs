@@ -15,6 +15,7 @@ namespace NTRCalendarWPF.Model {
         public string LastName { get; set; }
         [MaxLength(10)]
         [Required]
+        [Index(IsUnique = true)]
         public string UserID { get; set; }
         public virtual ICollection<Attendance> Attendances { get; set; }
     }

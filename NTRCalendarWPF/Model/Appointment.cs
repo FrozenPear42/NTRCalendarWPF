@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NTRCalendarWPF.Model {
+    [Serializable]
     public class Appointment {
         [Key, Column("AppointmentID")]
         public Guid AppointmentID { get; set; }
@@ -21,5 +22,9 @@ namespace NTRCalendarWPF.Model {
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public virtual ICollection<Attendance> Attendances { get; set; }
+
+        public override string ToString() {
+            return $"{AppointmentDate} {StartTime} - {EndTime}: {Title}";
+        }
     }
 }

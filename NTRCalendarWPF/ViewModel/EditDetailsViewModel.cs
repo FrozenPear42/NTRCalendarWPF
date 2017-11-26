@@ -8,8 +8,8 @@ using NTRCalendarWPF.Model;
 
 namespace NTRCalendarWPF.ViewModel {
     public class EditDetailsViewModel : ViewModelBase {
-        private CalendarEvent _oldEvent;
-        private CalendarEvent _currentEvent;
+        private Appointment _oldEvent;
+        private Appointment _currentEvent;
         private TimeSpan _startTime;
         private TimeSpan _endTime;
         private bool _isNewEvent;
@@ -22,7 +22,7 @@ namespace NTRCalendarWPF.ViewModel {
             get => _startTime;
             set {
                 SetProperty(ref _startTime, value);
-                CurrentEvent.Start = Day.Add(value);
+                CurrentEvent.StartTime = value;
             }
         }
 
@@ -30,29 +30,27 @@ namespace NTRCalendarWPF.ViewModel {
             get => _endTime;
             set {
                 SetProperty(ref _endTime, value);
-                CurrentEvent.End = Day.Add(value);
-            }
-        }
-        
-        public CalendarEvent CurrentEvent {
-            get => _currentEvent;
-            set {
-                SetProperty(ref _currentEvent, value);
-                StartTime = value.Start.TimeOfDay;
-                EndTime = value.End.TimeOfDay;
+                CurrentEvent.EndTime = value;
             }
         }
 
-        public CalendarEvent OldEvent {
+        public Appointment CurrentEvent {
+            get => _currentEvent;
+            set {
+                SetProperty(ref _currentEvent, value);
+                StartTime = value.StartTime;
+                EndTime = value.EndTime;
+            }
+        }
+
+        public Appointment OldEvent {
             get => _oldEvent;
             set {
                 _oldEvent = value;
                 IsNewEvent = (value == null);
                 if (value != null)
-                    Day = value.Start.Date;
-                CurrentEvent = (value == null)
-                    ? new CalendarEvent(Day)
-                    : new CalendarEvent(value.Name, value.Description, value.Start, value.End);
+                    Day = value.AppointmentDate;
+                CurrentEvent = value ?? new Appointment {AppointmentDate = Day };
             }
         }
 
@@ -66,7 +64,7 @@ namespace NTRCalendarWPF.ViewModel {
         public ICommand CommandCancel { get; }
 
         public EditDetailsViewModel() {
-            CurrentEvent = new CalendarEvent();
+            CurrentEvent = new Appointment();
             CommandSave = new RelayCommand(e => {
                 if (IsNewEvent)
                     CalendarEventRepository.AddEvent(CurrentEvent);

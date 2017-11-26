@@ -26,11 +26,11 @@ namespace NTRCalendarWPF.View {
                     (d, e) => { ((DayPanel) d)._vm.Day = e.NewValue as DateTime? ?? DateTime.MinValue; }));
 
         public static readonly DependencyProperty EventsSourceProperty =
-            DependencyProperty.Register("EventsSource", typeof(ObservableCollection<CalendarEvent>),
+            DependencyProperty.Register("EventsSource", typeof(ObservableCollection<Appointment>),
                 typeof(DayPanel),
                 new PropertyMetadata(null,
                     (d, e) => {
-                        ((DayPanel) d)._vm.EventsSource = e.NewValue as ObservableCollection<CalendarEvent>;
+                        ((DayPanel) d)._vm.EventsSource = e.NewValue as ObservableCollection<Appointment>;
                     }));
 
         public static readonly DependencyProperty EditEventProperty =
@@ -45,8 +45,8 @@ namespace NTRCalendarWPF.View {
         public static readonly DependencyProperty SpecialAccentProperty =
             DependencyProperty.Register("SpecialAccent", typeof(Brush), typeof(DayPanel), new PropertyMetadata(Brushes.Red));
 
-        public ObservableCollection<CalendarEvent> EventsSource {
-            get => (ObservableCollection<CalendarEvent>) GetValue(EventsSourceProperty);
+        public ObservableCollection<Appointment> EventsSource {
+            get => (ObservableCollection<Appointment>) GetValue(EventsSourceProperty);
             set => SetValue(EventsSourceProperty, value);
         }
 

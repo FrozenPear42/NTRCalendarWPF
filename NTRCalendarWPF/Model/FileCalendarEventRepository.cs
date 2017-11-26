@@ -14,45 +14,43 @@ namespace NTRCalendarWPF.Model {
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        public event RepositoryChangedDelegate EventRepositoryChanged;
+
         public string FileName { get; }
-        private List<CalendarEvent> CalendarEvents { get; set; }
+        private List<Appointment> CalendarEvents { get; set; }
 
         public FileCalendarEventRepository(string fileName) {
-            CalendarEvents = new List<CalendarEvent>();
+            CalendarEvents = new List<Appointment>();
             FileName = fileName;
             LoadFromFile();
         }
-
-        public event RepositoryAddRemoveDelegate EventAdded;
-        public event RepositoryAddRemoveDelegate EventRemoved;
-        public event RepositoryReplaceDelegate EventReplaced;
-
-        public bool AddEvent(CalendarEvent calendarEvent) {
+        
+        public bool AddEvent(Appointment calendarEvent) {
             CalendarEvents.Add(calendarEvent);
             log.InfoFormat("Added event to Repository {0}", calendarEvent);
             SaveFile();
-            EventAdded?.Invoke(calendarEvent);
+            EventRepositoryChanged?.Invoke();
             return true;
         }
 
-        bool ICalendarEventRepository.RemoveEvent(CalendarEvent calendarEvent) {
+        bool ICalendarEventRepository.RemoveEvent(Appointment calendarEvent) {
             if (!CalendarEvents.Remove(calendarEvent)) return false;
             log.InfoFormat("Removed event from Repository {0}", calendarEvent);
             SaveFile();
-            EventRemoved?.Invoke(calendarEvent);
+            EventRepositoryChanged?.Invoke();
             return true;
         }
 
-        public bool ReplaceEvent(CalendarEvent oldEvent, CalendarEvent newEvent) {
+        public bool ReplaceEvent(Appointment oldEvent, Appointment newEvent) {
             if (!CalendarEvents.Remove(oldEvent)) return false;
             CalendarEvents.Add(newEvent);
             log.InfoFormat("Replaced event {0} with {1}", oldEvent, newEvent);
             SaveFile();
-            EventReplaced?.Invoke(oldEvent, newEvent);
+            EventRepositoryChanged?.Invoke();
             return true;
         }
 
-        public List<CalendarEvent> GetEvents() {
+        public List<Appointment> GetEvents() {
             return CalendarEvents;
         }
 
@@ -69,7 +67,7 @@ namespace NTRCalendarWPF.Model {
             try {
                 using (var stream = File.Open(FileName, FileMode.Open)) {
                     var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    CalendarEvents = (List<CalendarEvent>) formatter.Deserialize(stream);
+                    CalendarEvents = (List<Appointment>) formatter.Deserialize(stream);
                     log.InfoFormat("Loaded {0} events from file {1}", CalendarEvents.Count, FileName);
                     return true;
                 }

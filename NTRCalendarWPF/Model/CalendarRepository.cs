@@ -17,8 +17,9 @@ namespace NTRCalendarWPF.Model {
         }
 
         public Person GetPersonByUserID(string userID) {
-            using (var db = new StorageContext())
-                return db.People.First(user => user.UserID.Equals(userID));
+            using (var db = new StorageContext()) {
+                return db.People.FirstOrDefault(user => user.UserID.Equals(userID));
+            }
         }
 
         public List<Appointment> GetAppointments() {

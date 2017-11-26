@@ -32,7 +32,7 @@
         <GroupBox Header="Details">
             <StackPanel>
                 <Label Content="Name" />
-                <TextBox Text="{Binding CurrentEvent.Name}" />
+                <TextBox Text="{Binding CurrentEvent.Title}" />
                 <Label Content="Description" />
                 <TextBox TextWrapping="Wrap" MinLines="4" MinHeight="66" MaxHeight="66" MaxLines="4"
                          AcceptsReturn="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto"

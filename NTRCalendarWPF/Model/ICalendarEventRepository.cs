@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace NTRCalendarWPF.Model {
 
-    public delegate void RepositoryAddRemoveDelegate(CalendarEvent calendarEvent);
-    public delegate void RepositoryReplaceDelegate(CalendarEvent oldEvent, CalendarEvent newEvent);
-    public interface ICalendarEventRepository {
-        event RepositoryAddRemoveDelegate EventAdded;
-        event RepositoryAddRemoveDelegate EventRemoved;
-        event RepositoryReplaceDelegate EventReplaced;
+    public delegate void RepositoryChangedDelegate();
 
-        bool AddEvent(CalendarEvent calendarEvent);
-        bool RemoveEvent(CalendarEvent calendarEvent);
-        bool ReplaceEvent(CalendarEvent oldEvent, CalendarEvent newEvent);
-        List<CalendarEvent> GetEvents();
+    public interface ICalendarEventRepository {
+        event RepositoryChangedDelegate EventRepositoryChanged;
+
+        bool AddEvent(Appointment calendarEvent);
+        bool RemoveEvent(Appointment calendarEvent);
+        bool ReplaceEvent(Appointment oldEvent, Appointment newEvent);
+        List<Appointment> GetEvents();
 
     }
 }
