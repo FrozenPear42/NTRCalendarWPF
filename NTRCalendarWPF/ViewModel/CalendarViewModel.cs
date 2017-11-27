@@ -18,8 +18,7 @@ namespace NTRCalendarWPF.ViewModel {
         private string _fontName;
         private Theme _theme;
         private Person _person;
-
-
+        
         public ICommand CommandNext { get; set; }
         public ICommand CommandPrevious { get; set; }
         public ICommand CommandAddEvent { get; set; }
@@ -28,7 +27,6 @@ namespace NTRCalendarWPF.ViewModel {
         public IWindowService WindowService { set; private get; }
         public IEnvironmentService EnvironmentService { set; private get; }
         public Action CloseAction { get; set; }
-
 
         public CalendarRepository CalendarRepository { get; set; }
         public ICalendarEventRepository EventRepository { get; set; }
@@ -107,8 +105,8 @@ namespace NTRCalendarWPF.ViewModel {
                 var userID = args[1];
                 _person = CalendarRepository.GetPersonByUserID(userID);
                 if (_person == null) {
-                    Console.Out.WriteLine(
-                        "UserID not found, use for creation: Calendar <userID> <firstName> <secondName>");
+                    Console.Out.WriteLine("UserID not found, use for creation: Calendar <userID> <firstName> <secondName>");
+                    log.InfoFormat("UserID {0} not found, exiting", userID);
                     CloseAction?.Invoke();
                 }
                 log.InfoFormat("Running with user ID: {0}", userID);
@@ -129,6 +127,7 @@ namespace NTRCalendarWPF.ViewModel {
             }
             else {
                 Console.Out.WriteLine("Usage: Calendar <userID> || Calendar <userID> <firstName> <secondName>");
+                log.InfoFormat("Wrong params, exiting");
                 CloseAction?.Invoke();
             }
         }

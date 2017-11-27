@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using NTRCalendarWPF.Helpers;
 
 namespace NTRCalendarWPF.View {
     public partial class EditDetailsWindow : Window {
@@ -20,6 +21,9 @@ namespace NTRCalendarWPF.View {
                 DialogResult = true;
                 Close();
             };
+            EditDetailsViewModel.DialogService = new DialogService((title, message) => {
+                MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+            });
         }
     }
 }

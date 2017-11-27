@@ -10,11 +10,11 @@ namespace NTRCalendarWPF.Model {
         public Guid AppointmentID { get; set; }
 
         [MaxLength(16)]
-        [Required]
+        [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
    
         [MaxLength(50)]
-        [Required]
+        [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
 
         [Column(TypeName = "date")]

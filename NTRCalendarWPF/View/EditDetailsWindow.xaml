@@ -5,7 +5,7 @@
         xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel"
         xmlns:local="clr-namespace:NTRCalendarWPF"
         Title="Edit Details"
-        Width="200" Height="360">
+        Width="200" Height="360" MinWidth="200">
 
     <Window.DataContext>
         <viewModel:EditDetailsViewModel x:Name="EditDetailsViewModel" />
@@ -14,7 +14,7 @@
         <local:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </Window.Resources>
 
-    <StackPanel VerticalAlignment="Top">
+    <StackPanel VerticalAlignment="Stretch">
         <StackPanel.Resources>
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="5,5,5,5" />
@@ -29,12 +29,12 @@
                 <view:TimePicker Value="{Binding EndTime}" MinTime="{Binding StartTime}" />
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Details">
+        <GroupBox Header="Details" VerticalAlignment="Stretch" Height="Auto">
             <StackPanel>
                 <Label Content="Name" />
                 <TextBox Text="{Binding CurrentEvent.Title}" />
                 <Label Content="Description" />
-                <TextBox TextWrapping="Wrap" MinLines="4" MinHeight="66" MaxHeight="66" MaxLines="4"
+                <TextBox TextWrapping="Wrap" MinLines="4" MinHeight="66" MaxLines="4"
                          AcceptsReturn="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto"
                          Text="{Binding CurrentEvent.Description }" />
             </StackPanel>

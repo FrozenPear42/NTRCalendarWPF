@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.Validation;
 using System.Dynamic;
 using System.Linq;
 using System.Security.RightsManagement;
@@ -11,9 +13,12 @@ namespace NTRCalendarWPF.Model {
 
         public event CalendarModifiedDelegate OnDataChanged;
 
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public List<Person> GetPeople() {
-            using (var db = new StorageContext())
+            using (var db = new StorageContext()) {
                 return db.People.ToList();
+            }
         }
 
         public Person GetPersonByUserID(string userID) {
@@ -23,13 +28,15 @@ namespace NTRCalendarWPF.Model {
         }
 
         public List<Appointment> GetAppointments() {
-            using (var db = new StorageContext())
+            using (var db = new StorageContext()) {
                 return db.Appointments.ToList();
+            }
         }
 
         public List<Appointment> GetAppointmentsByUserID(string user) {
-            using (var db = new StorageContext())
+            using (var db = new StorageContext()) {
                 return db.Attendances.Where(a => a.Person.UserID.Equals(user)).Select(a => a.Appointment).ToList();
+            }
         }
 
         public Person AddPerson(string firstName, string lastName, string userID) {
@@ -41,12 +48,26 @@ namespace NTRCalendarWPF.Model {
             };
             using (var db = new StorageContext()) {
                 db.People.Add(person);
-                db.SaveChanges();
+                try {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e) {
+                    var message = e.EntityValidationErrors
+                        .SelectMany(errors => errors.ValidationErrors)
+                        .Aggregate("", (current, error) => current + (error.ErrorMessage + '\n'));
+                    log.Error(message);
+                    throw new Exception(message);
+                }
+                catch (Exception e) {
+                    log.Error(e.Message);
+                    throw new Exception("DB error. " + e.Message);
+                }
                 return person;
             }
         }
 
-        public void AddAppointment(string userID, string title, string description, DateTime date, TimeSpan start, TimeSpan end) {
+        public Appointment AddAppointment(string userID, string title, string description, DateTime date,
+            TimeSpan start, TimeSpan end) {
             var appointment = new Appointment {
                 AppointmentID = Guid.NewGuid(),
                 Title = title,
@@ -65,26 +86,62 @@ namespace NTRCalendarWPF.Model {
 
                 db.Appointments.Add(appointment);
                 db.Attendances.Add(attendance);
-                db.SaveChanges();
+
+                try {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e) {
+                    var message = e.EntityValidationErrors
+                        .SelectMany(errors => errors.ValidationErrors)
+                        .Aggregate("", (current, error) => current + (error.ErrorMessage + '\n'));
+                    log.Error(message);
+                    throw new Exception(message);
+                }
+                catch (Exception e) {
+                    log.Error(e.Message);
+                    throw new Exception("DB error. " + e.Message);
+                }
             }
             OnDataChanged?.Invoke();
+            return appointment;
         }
 
-        public void RemoveAppointment(Appointment appointment) {
+        public Appointment RemoveAppointment(Appointment appointment) {
             using (var db = new StorageContext()) {
                 var app = db.Appointments.First(a => a.AppointmentID.Equals(appointment.AppointmentID));
                 db.Appointments.Remove(app);
-                db.SaveChanges();
+                try {
+                    db.SaveChanges();
+                }
+                catch (Exception e) {
+                    log.Error(e.Message);
+                    throw new Exception("DB error. " + e.Message);
+                }
+                OnDataChanged?.Invoke();
+                return app;
             }
-            OnDataChanged?.Invoke();
         }
 
-        public void UpdateAppointment(Appointment appointment) {
+        public Appointment UpdateAppointment(Appointment appointment) {
             using (var db = new StorageContext()) {
                 db.Appointments.AddOrUpdate(appointment);
-                db.SaveChanges();
+                try {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException e) {
+                    var message = e.EntityValidationErrors
+                        .SelectMany(errors => errors.ValidationErrors)
+                        .Aggregate("", (current, error) => current + (error.ErrorMessage + '\n'));
+                    log.Error(message);
+                    throw new Exception(message);
+                }
+                catch (Exception e) {
+                    log.Error(e.Message);
+                    throw new Exception("DB error. " + e.Message);
+                }
+                OnDataChanged?.Invoke();
             }
-            OnDataChanged?.Invoke();
+            return appointment;
         }
     }
 }

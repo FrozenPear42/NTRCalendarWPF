@@ -2,23 +2,15 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace NTRCalendarWPF {
-    public class FontSizeConverter : IMultiValueConverter {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-        {
-            var w = (double)values[0];
-            var h = (double)values[1];
-
-            return (w * h) / double.Parse((string)parameter);
-        }
-
+namespace NTRCalendarWPF.Helpers {
+    public class FontSizeConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            var size = (double?) value;
-            return size / 10;
+            var size = (double) value;
+            var factor = double.Parse((string)parameter);
+            return size / factor;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
             throw new NotImplementedException();
         }
 

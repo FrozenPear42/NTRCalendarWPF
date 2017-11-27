@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using NTRCalendarWPF.Helpers;
 using NTRCalendarWPF.Model;
 
 namespace NTRCalendarWPF.ViewModel {
@@ -16,6 +17,7 @@ namespace NTRCalendarWPF.ViewModel {
 
         public Action CloseAction { get; set; }
         public ICalendarEventRepository CalendarEventRepository { set; get; }
+        public IDialogService DialogService { get; set; }
         public DateTime Day { get; set; }
 
         public TimeSpan StartTime {
@@ -47,10 +49,10 @@ namespace NTRCalendarWPF.ViewModel {
             get => _oldEvent;
             set {
                 _oldEvent = value;
-                IsNewEvent = (value == null);
+                IsNewEvent = value == null;
                 if (value != null)
                     Day = value.AppointmentDate;
-                CurrentEvent = value ?? new Appointment {AppointmentDate = Day };
+                CurrentEvent = value ?? new Appointment {AppointmentDate = Day};
             }
         }
 
@@ -66,15 +68,25 @@ namespace NTRCalendarWPF.ViewModel {
         public EditDetailsViewModel() {
             CurrentEvent = new Appointment();
             CommandSave = new RelayCommand(e => {
-                if (IsNewEvent)
-                    CalendarEventRepository.AddEvent(CurrentEvent);
-                else
-                    CalendarEventRepository.ReplaceEvent(OldEvent, CurrentEvent);
-                CloseAction?.Invoke();
+                try {
+                    if (IsNewEvent)
+                        CalendarEventRepository.AddEvent(CurrentEvent);
+                    else
+                        CalendarEventRepository.ReplaceEvent(OldEvent, CurrentEvent);
+                    CloseAction?.Invoke();
+                }
+                catch (Exception ex) {
+                    DialogService.ShowDialog("Error", ex.Message);
+                }
             });
             CommandRemove = new RelayCommand(e => {
-                CalendarEventRepository.RemoveEvent(OldEvent);
-                CloseAction?.Invoke();
+                try {
+                    CalendarEventRepository.RemoveEvent(OldEvent);
+                    CloseAction?.Invoke();
+                }
+                catch (Exception ex) {
+                    DialogService.ShowDialog("Error", ex.Message);
+                }
             });
             CommandCancel = new RelayCommand(e => CloseAction?.Invoke());
         }

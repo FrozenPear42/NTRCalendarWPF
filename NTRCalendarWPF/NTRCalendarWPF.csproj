@@ -85,7 +85,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\DayDateConverter.cs" />
+    <Compile Include="Helpers\DialogService.cs" />
     <Compile Include="Helpers\FontSizeConverter.cs" />
+    <Compile Include="Helpers\IDialogService.cs" />
     <Compile Include="Helpers\IEnvironmentService.cs" />
     <Compile Include="Helpers\InvertBooleanConverter.cs" />
     <Compile Include="Helpers\IWindowService.cs" />
