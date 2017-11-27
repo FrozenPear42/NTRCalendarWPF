@@ -115,7 +115,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Appointment.cs" />
     <Compile Include="Model\Attendance.cs" />
-    <Compile Include="Model\CalendarEvent.cs" />
+    <Compile Include="Model\DBCalendarEventRepository.cs" />
     <Compile Include="Model\FileCalendarEventRepository.cs" />
     <Compile Include="Model\ICalendarEventRepository.cs" />
     <Compile Include="Model\Person.cs" />

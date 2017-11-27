@@ -71,12 +71,16 @@ namespace NTRCalendarWPF.ViewModel {
 
             EnvironmentService = new NewUserEnv(new[] {"agruszka", "Andrzej", "Gruszka"});
             CalendarRepository = new CalendarRepository();
-            EventRepository = new FileCalendarEventRepository("asd.dat");
             ParseArgs();
+            EventRepository = new DBCalendarEventRepository(_person, CalendarRepository);
+            //            EventRepository = new FileCalendarEventRepository("asd.dat");
+
 
             Events = new ObservableCollection<Appointment>(EventRepository.GetEvents());
             EventRepository.EventRepositoryChanged += () => {
-                Events = new ObservableCollection<Appointment>(EventRepository.GetEvents());
+                Events.Add(new Appointment { AppointmentDate = DateTime.Today, Title = "qwerty", StartTime = TimeSpan.Zero, EndTime = TimeSpan.Zero, AppointmentID = Guid.NewGuid()});
+
+//                EventRepository.GetEvents().ForEach(a => Events.Add(a));
             };
 
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));

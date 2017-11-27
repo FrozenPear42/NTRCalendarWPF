@@ -46,12 +46,14 @@ namespace NTRCalendarWPF.Model {
             }
         }
 
-        public void AddAppointment(string userID, string title, DateTime start, DateTime end) {
+        public void AddAppointment(string userID, string title, string description, DateTime date, TimeSpan start, TimeSpan end) {
             var appointment = new Appointment {
+                AppointmentID = Guid.NewGuid(),
                 Title = title,
-                StartTime = start.TimeOfDay,
-                EndTime = end.TimeOfDay,
-                AppointmentID = Guid.NewGuid()
+                AppointmentDate = date,
+                StartTime = start,
+                EndTime = end,
+                Description = description,
             };
             var attendance = new Attendance {
                 Appointment = appointment,
@@ -70,7 +72,8 @@ namespace NTRCalendarWPF.Model {
 
         public void RemoveAppointment(Appointment appointment) {
             using (var db = new StorageContext()) {
-                db.Appointments.Remove(appointment);
+                var app = db.Appointments.First(a => a.AppointmentID.Equals(appointment.AppointmentID));
+                db.Appointments.Remove(app);
                 db.SaveChanges();
             }
             OnDataChanged?.Invoke();
