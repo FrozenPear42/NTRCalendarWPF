@@ -5,7 +5,7 @@
         xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel"
         xmlns:local="clr-namespace:NTRCalendarWPF"
         Title="Edit Details"
-        Width="200" Height="360" MinWidth="200">
+        Width="200" Height="311" MinWidth="200" MinHeight="380">
 
     <Window.DataContext>
         <viewModel:EditDetailsViewModel x:Name="EditDetailsViewModel" />
@@ -14,14 +14,20 @@
         <local:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </Window.Resources>
 
-    <StackPanel VerticalAlignment="Stretch">
-        <StackPanel.Resources>
+    <Grid VerticalAlignment="Stretch">
+        <Grid.Resources>
             <Style TargetType="Button">
                 <Setter Property="Margin" Value="5,5,5,5" />
                 <Setter Property="Padding" Value="5,5,5,5" />
             </Style>
-        </StackPanel.Resources>
-        <GroupBox Header="Time">
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="0.7*"/>
+        </Grid.RowDefinitions>
+        
+        <GroupBox Header="Time" Grid.Row="0">
             <StackPanel>
                 <Label Content="From" />
                 <view:TimePicker Value="{Binding StartTime}" MaxTime="{Binding EndTime}"/>
@@ -29,22 +35,22 @@
                 <view:TimePicker Value="{Binding EndTime}" MinTime="{Binding StartTime}" />
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Details" VerticalAlignment="Stretch" Height="Auto">
+        <GroupBox Header="Details" VerticalAlignment="Stretch" Height="Auto" Grid.Row="1">
             <StackPanel>
                 <Label Content="Name" />
                 <TextBox Text="{Binding CurrentEvent.Title}" />
                 <Label Content="Description" />
-                <TextBox TextWrapping="Wrap" MinLines="4" MinHeight="66" MaxLines="4"
+                <TextBox TextWrapping="Wrap" MinLines="4" MinHeight="66"
                          AcceptsReturn="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto"
-                         Text="{Binding CurrentEvent.Description }" />
+                         Text="{Binding CurrentEvent.Description }" Height="Auto"/>
             </StackPanel>
         </GroupBox>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2">
             <Button Content="Remove"
                     IsEnabled="{Binding IsNewEvent, Converter={StaticResource InvertBooleanConverter}}"
                     Command="{Binding CommandRemove}" />
             <Button Content="Cancel" Command="{Binding CommandCancel}" />
             <Button Content="Save" Command="{Binding CommandSave}" />
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </Window>

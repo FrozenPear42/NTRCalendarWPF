@@ -114,6 +114,10 @@
     <Compile Include="Migrations\201711262252262_UniqueUserID.Designer.cs">
       <DependentUpon>201711262252262_UniqueUserID.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711271627277_AcceptedField.cs" />
+    <Compile Include="Migrations\201711271627277_AcceptedField.Designer.cs">
+      <DependentUpon>201711271627277_AcceptedField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Appointment.cs" />
     <Compile Include="Model\Attendance.cs" />
@@ -193,6 +197,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711262252262_UniqueUserID.resx">
       <DependentUpon>201711262252262_UniqueUserID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711271627277_AcceptedField.resx">
+      <DependentUpon>201711271627277_AcceptedField.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

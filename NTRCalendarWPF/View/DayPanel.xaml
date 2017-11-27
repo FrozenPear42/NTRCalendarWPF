@@ -59,8 +59,8 @@
                                                   CommandParameter="{Binding}" />
                                 </Border.InputBindings>
                                 <TextBlock>
-                                    <Run Text="{Binding StartTime, StringFormat={}{0:hhmm}\ -}" />
-                                    <Run Text="{Binding EndTime, StringFormat={}{0:hhmm}}" />
+                                    <Run Text="{Binding StartTime, StringFormat={}{0:hh\\:mm}\ -}" />
+                                    <Run Text="{Binding EndTime, StringFormat={}{0:hh\\:mm}}" />
                                     <Run Text="{Binding Title}" />
                                 </TextBlock>
                             </Border>

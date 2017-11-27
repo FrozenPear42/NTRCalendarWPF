@@ -31,6 +31,7 @@ namespace NTRCalendarWPF.View {
                 new PropertyMetadata(null,
                     (d, e) => {
                         ((DayPanel) d)._vm.EventsSource = e.NewValue as ObservableCollection<Appointment>;
+                        Console.Out.WriteLine("Changed Event source");
                     }));
 
         public static readonly DependencyProperty EditEventProperty =

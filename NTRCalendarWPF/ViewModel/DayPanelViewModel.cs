@@ -23,7 +23,7 @@ namespace NTRCalendarWPF.ViewModel {
             get => _eventsSource;
             set {
                 SetProperty(ref _eventsSource, value);
-                value.CollectionChanged += (sender, args) => UpdateEvents();
+                value.CollectionChanged += (sender, args) => { UpdateEvents(); Console.Out.WriteLine("Changed Event source: U");                };
                 UpdateEvents();
             }
         }

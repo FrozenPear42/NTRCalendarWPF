@@ -17,8 +17,7 @@ namespace NTRCalendarWPF.ViewModel {
         private bool _isPopupOpen;
         private string _fontName;
         private Theme _theme;
-        private Person _person;
-        
+
         public ICommand CommandNext { get; set; }
         public ICommand CommandPrevious { get; set; }
         public ICommand CommandAddEvent { get; set; }
@@ -27,6 +26,7 @@ namespace NTRCalendarWPF.ViewModel {
         public IWindowService WindowService { set; private get; }
         public IEnvironmentService EnvironmentService { set; private get; }
         public Action CloseAction { get; set; }
+        public Person Person { get; set; }
 
         public CalendarRepository CalendarRepository { get; set; }
         public ICalendarEventRepository EventRepository { get; set; }
@@ -70,15 +70,14 @@ namespace NTRCalendarWPF.ViewModel {
             EnvironmentService = new NewUserEnv(new[] {"agruszka", "Andrzej", "Gruszka"});
             CalendarRepository = new CalendarRepository();
             ParseArgs();
-            EventRepository = new DBCalendarEventRepository(_person, CalendarRepository);
+            EventRepository = new DBCalendarEventRepository(Person, CalendarRepository);
             //            EventRepository = new FileCalendarEventRepository("asd.dat");
 
 
             Events = new ObservableCollection<Appointment>(EventRepository.GetEvents());
             EventRepository.EventRepositoryChanged += () => {
-                Events.Add(new Appointment { AppointmentDate = DateTime.Today, Title = "qwerty", StartTime = TimeSpan.Zero, EndTime = TimeSpan.Zero, AppointmentID = Guid.NewGuid()});
-
-//                EventRepository.GetEvents().ForEach(a => Events.Add(a));
+                Events.Clear();
+                EventRepository.GetEvents().ForEach(a => Events.Add(a));
             };
 
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
@@ -103,9 +102,10 @@ namespace NTRCalendarWPF.ViewModel {
 
             if (argsCount == 2) {
                 var userID = args[1];
-                _person = CalendarRepository.GetPersonByUserID(userID);
-                if (_person == null) {
-                    Console.Out.WriteLine("UserID not found, use for creation: Calendar <userID> <firstName> <secondName>");
+                Person = CalendarRepository.GetPersonByUserID(userID);
+                if (Person == null) {
+                    Console.Out.WriteLine(
+                        "UserID not found, use for creation: Calendar <userID> <firstName> <secondName>");
                     log.InfoFormat("UserID {0} not found, exiting", userID);
                     CloseAction?.Invoke();
                 }
@@ -116,13 +116,13 @@ namespace NTRCalendarWPF.ViewModel {
                 var firstName = args[2];
                 var lastName = args[3];
                 try {
-                    _person = CalendarRepository.AddPerson(firstName, lastName, userID);
+                    Person = CalendarRepository.AddPerson(firstName, lastName, userID);
                     log.InfoFormat("Created User {1} {2} with UserID: {0}", userID, firstName, lastName);
                 }
                 catch (Exception) {
                     Console.Out.WriteLine("UserID already exists");
                     log.InfoFormat("Username {0} exists, using it", userID);
-                    _person = CalendarRepository.GetPersonByUserID(userID);
+                    Person = CalendarRepository.GetPersonByUserID(userID);
                 }
             }
             else {

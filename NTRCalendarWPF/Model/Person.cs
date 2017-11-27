@@ -18,5 +18,9 @@ namespace NTRCalendarWPF.Model {
         [Index(IsUnique = true)]
         public string UserID { get; set; }
         public virtual ICollection<Attendance> Attendances { get; set; }
+
+        [NotMapped]
+        public string FullName => FirstName + ' ' + LastName;
+
     }
 }

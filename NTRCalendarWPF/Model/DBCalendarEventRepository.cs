@@ -8,15 +8,16 @@ namespace NTRCalendarWPF.Model {
     public class DBCalendarEventRepository : ICalendarEventRepository {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        public event RepositoryChangedDelegate EventRepositoryChanged;
+
         private readonly Person _person;
         private readonly CalendarRepository _repository;
 
         public DBCalendarEventRepository(Person person, CalendarRepository repository) {
             _person = person;
             _repository = repository;
+            _repository.OnDataChanged += () => EventRepositoryChanged?.Invoke();
         }
-
-        public event RepositoryChangedDelegate EventRepositoryChanged;
 
         public bool AddEvent(Appointment calendarEvent) {
             _repository.AddAppointment(_person.UserID, calendarEvent.Title, calendarEvent.Description,

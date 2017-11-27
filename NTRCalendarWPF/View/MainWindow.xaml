@@ -6,7 +6,7 @@
         xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel" 
         xmlns:ntrCalendarWpf="clr-namespace:NTRCalendarWPF" 
         xmlns:helpers="clr-namespace:NTRCalendarWPF.Helpers"
-        Title="Calendar" MinWidth="1100" MinHeight="400"
+        Title="{Binding Person.FullName}" MinWidth="1100" MinHeight="400"
         Background="White" Width="1400" Height="500">
 
     <Window.DataContext>
