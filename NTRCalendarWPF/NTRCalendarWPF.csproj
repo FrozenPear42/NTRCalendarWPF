@@ -118,6 +118,10 @@
     <Compile Include="Migrations\201711271627277_AcceptedField.Designer.cs">
       <DependentUpon>201711271627277_AcceptedField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711292332349_ConcurrencyCheck.cs" />
+    <Compile Include="Migrations\201711292332349_ConcurrencyCheck.Designer.cs">
+      <DependentUpon>201711292332349_ConcurrencyCheck.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Appointment.cs" />
     <Compile Include="Model\Attendance.cs" />
@@ -127,6 +131,7 @@
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\CalendarRepository.cs" />
     <Compile Include="Model\StorageContext.cs" />
+    <Compile Include="Model\UserAppointment.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="ViewModel\DayPanelViewModel.cs" />
@@ -201,6 +206,9 @@
     <EmbeddedResource Include="Migrations\201711271627277_AcceptedField.resx">
       <DependentUpon>201711271627277_AcceptedField.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711292332349_ConcurrencyCheck.resx">
+      <DependentUpon>201711292332349_ConcurrencyCheck.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -212,7 +220,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="log4net.conf">

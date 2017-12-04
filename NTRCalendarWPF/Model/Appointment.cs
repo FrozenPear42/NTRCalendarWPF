@@ -23,6 +23,10 @@ namespace NTRCalendarWPF.Model {
         public TimeSpan EndTime { get; set; }
         public virtual ICollection<Attendance> Attendances { get; set; }
 
+        [Timestamp]
+        [ConcurrencyCheck]
+        public byte[] Timestamp { get; set; }
+
         public override string ToString() {
             return $"{AppointmentDate} {StartTime} - {EndTime}: {Title}";
         }

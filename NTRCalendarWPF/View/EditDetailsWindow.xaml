@@ -43,6 +43,7 @@
                 <TextBox TextWrapping="Wrap" MinLines="4" MinHeight="66"
                          AcceptsReturn="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto"
                          Text="{Binding CurrentEvent.Description }" Height="Auto"/>
+                <CheckBox Content="Accepted" IsChecked="True"/>
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2">

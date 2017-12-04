@@ -52,7 +52,17 @@ namespace NTRCalendarWPF.ViewModel {
                 IsNewEvent = value == null;
                 if (value != null)
                     Day = value.AppointmentDate;
-                CurrentEvent = value ?? new Appointment {AppointmentDate = Day};
+                if (value == null)
+                    CurrentEvent = new Appointment {AppointmentDate = Day};
+                else
+                    CurrentEvent = new Appointment {
+                        AppointmentID = value.AppointmentID,
+                        Title = value.Title,
+                        Description = value.Description,
+                        AppointmentDate = value.AppointmentDate,
+                        StartTime = value.StartTime,
+                        EndTime = value.EndTime,
+                    };
             }
         }
 

@@ -133,6 +133,8 @@ namespace NTRCalendarWPF.ViewModel {
         }
 
         private void ChangeWeek(int direction) {
+            Events.Clear();
+            EventRepository.GetEvents().ForEach(a => Events.Add(a));
             FirstDay = FirstDay.AddDays(7 * direction);
             UpdateWeeks();
         }

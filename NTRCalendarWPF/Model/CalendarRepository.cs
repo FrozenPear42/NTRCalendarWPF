@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
 using System.Dynamic;
@@ -13,7 +14,8 @@ namespace NTRCalendarWPF.Model {
 
         public event CalendarModifiedDelegate OnDataChanged;
 
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public List<Person> GetPeople() {
             using (var db = new StorageContext()) {
@@ -113,6 +115,9 @@ namespace NTRCalendarWPF.Model {
                 try {
                     db.SaveChanges();
                 }
+                catch (DBConcurrencyException e) {
+                    throw new Exception(e.Message);
+                }
                 catch (Exception e) {
                     log.Error(e.Message);
                     throw new Exception("DB error. " + e.Message);
@@ -125,8 +130,12 @@ namespace NTRCalendarWPF.Model {
         public Appointment UpdateAppointment(Appointment appointment) {
             using (var db = new StorageContext()) {
                 db.Appointments.AddOrUpdate(appointment);
+                var dbRef = db.Appointments.First(a => a.AppointmentID.Equals(appointment.AppointmentID));
                 try {
                     db.SaveChanges();
+                }
+                catch (DBConcurrencyException e) {
+                    throw new Exception(e.Message);
                 }
                 catch (DbEntityValidationException e) {
                     var message = e.EntityValidationErrors
