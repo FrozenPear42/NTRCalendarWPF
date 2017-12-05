@@ -17,8 +17,8 @@ namespace NTRCalendarWPF.View {
                     window.EditDetailsViewModel.Day = (DateTime) context;
                     window.EditDetailsViewModel.OldEvent = null;
                 }
-                else if (context is Appointment) {
-                    window.EditDetailsViewModel.OldEvent = (Appointment) context;
+                else if (context is UserAppointment) {
+                    window.EditDetailsViewModel.OldEvent = (UserAppointment) context;
                 }
 
                 window.EditDetailsViewModel.CalendarEventRepository = CalendarViewModel.EventRepository;

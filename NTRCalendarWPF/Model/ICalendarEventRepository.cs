@@ -11,10 +11,10 @@ namespace NTRCalendarWPF.Model {
     public interface ICalendarEventRepository {
         event RepositoryChangedDelegate EventRepositoryChanged;
 
-        bool AddEvent(Appointment calendarEvent);
-        bool RemoveEvent(Appointment calendarEvent);
-        bool ReplaceEvent(Appointment oldEvent, Appointment newEvent);
-        List<Appointment> GetEvents();
+        bool AddEvent(UserAppointment appointment);
+        bool RemoveEvent(UserAppointment appointment);
+        bool ReplaceEvent(UserAppointment oldAppointment, UserAppointment newAppointment);
+        List<UserAppointment> GetEvents();
 
     }
 }

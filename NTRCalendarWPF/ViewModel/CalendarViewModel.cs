@@ -31,7 +31,7 @@ namespace NTRCalendarWPF.ViewModel {
         public CalendarRepository CalendarRepository { get; set; }
         public ICalendarEventRepository EventRepository { get; set; }
         public ObservableCollection<string> WeekFields { get; set; }
-        public ObservableCollection<Appointment> Events { get; set; }
+        public ObservableCollection<UserAppointment> Events { get; set; }
 
         public List<string> Fonts { get; }
         public List<Theme> Themes { get; }
@@ -74,7 +74,7 @@ namespace NTRCalendarWPF.ViewModel {
             //            EventRepository = new FileCalendarEventRepository("asd.dat");
 
 
-            Events = new ObservableCollection<Appointment>(EventRepository.GetEvents());
+            Events = new ObservableCollection<UserAppointment>(EventRepository.GetEvents());
             EventRepository.EventRepositoryChanged += () => {
                 Events.Clear();
                 EventRepository.GetEvents().ForEach(a => Events.Add(a));
@@ -83,7 +83,7 @@ namespace NTRCalendarWPF.ViewModel {
             CommandPrevious = new RelayCommand(e => ChangeWeek(-1));
             CommandNext = new RelayCommand(e => ChangeWeek(1));
             CommandAddEvent = new RelayCommand(e => WindowService?.ShowWindow((DateTime) e));
-            CommandEditEvent = new RelayCommand(e => WindowService?.ShowWindow((Appointment) e));
+            CommandEditEvent = new RelayCommand(e => WindowService?.ShowWindow((UserAppointment) e));
             CommandTogglePopup = new RelayCommand(e => IsPopupOpen = !IsPopupOpen);
 
             var day = DateTime.Today;

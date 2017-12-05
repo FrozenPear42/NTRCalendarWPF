@@ -17,11 +17,6 @@ namespace NTRCalendarWPF.Model {
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public List<Person> GetPeople() {
-            using (var db = new StorageContext()) {
-                return db.People.ToList();
-            }
-        }
 
         public Person GetPersonByUserID(string userID) {
             using (var db = new StorageContext()) {
@@ -29,15 +24,33 @@ namespace NTRCalendarWPF.Model {
             }
         }
 
-        public List<Appointment> GetAppointments() {
-            using (var db = new StorageContext()) {
-                return db.Appointments.ToList();
-            }
-        }
+//        public List<Person> GetPeople() {
+//            using (var db = new StorageContext()) {
+//                return db.People.ToList();
+//            }
+//        }
+//
+//        public List<Appointment> GetAppointments() {
+//            using (var db = new StorageContext()) {
+//                return db.Appointments.ToList();
+//            }
+//        }
 
-        public List<Appointment> GetAppointmentsByUserID(string user) {
+        public List<UserAppointment> GetAppointmentsByUserID(string user) {
             using (var db = new StorageContext()) {
-                return db.Attendances.Where(a => a.Person.UserID.Equals(user)).Select(a => a.Appointment).ToList();
+                return db.Attendances
+                    .Where(a => a.Person.UserID.Equals(user))
+                    .Select(a => new UserAppointment {
+                        AppointmentID = a.Appointment.AppointmentID,
+                        UserID = user,
+                        Title = a.Appointment.Title,
+                        Description = a.Appointment.Description,
+                        AppointmentDate = a.Appointment.AppointmentDate,
+                        StartTime = a.Appointment.StartTime,
+                        EndTime = a.Appointment.EndTime,
+                        Accepted = a.Accepted
+                    })
+                    .ToList();
             }
         }
 
@@ -68,8 +81,8 @@ namespace NTRCalendarWPF.Model {
             }
         }
 
-        public Appointment AddAppointment(string userID, string title, string description, DateTime date,
-            TimeSpan start, TimeSpan end) {
+        public void AddAppointment(string userID, string title, string description, DateTime date, TimeSpan start,
+            TimeSpan end, bool accepted) {
             var appointment = new Appointment {
                 AppointmentID = Guid.NewGuid(),
                 Title = title,
@@ -80,6 +93,7 @@ namespace NTRCalendarWPF.Model {
             };
             var attendance = new Attendance {
                 Appointment = appointment,
+                Accepted = accepted,
             };
 
             using (var db = new StorageContext()) {
@@ -105,10 +119,9 @@ namespace NTRCalendarWPF.Model {
                 }
             }
             OnDataChanged?.Invoke();
-            return appointment;
         }
 
-        public Appointment RemoveAppointment(Appointment appointment) {
+        public void RemoveAppointment(UserAppointment appointment) {
             using (var db = new StorageContext()) {
                 var app = db.Appointments.First(a => a.AppointmentID.Equals(appointment.AppointmentID));
                 db.Appointments.Remove(app);
@@ -123,14 +136,18 @@ namespace NTRCalendarWPF.Model {
                     throw new Exception("DB error. " + e.Message);
                 }
                 OnDataChanged?.Invoke();
-                return app;
             }
         }
 
-        public Appointment UpdateAppointment(Appointment appointment) {
+        public void UpdateAppointment(UserAppointment appointment) {
             using (var db = new StorageContext()) {
-                db.Appointments.AddOrUpdate(appointment);
-                var dbRef = db.Appointments.First(a => a.AppointmentID.Equals(appointment.AppointmentID));
+                var app = db.Appointments.First(a => a.AppointmentID.Equals(appointment.AppointmentID));
+                app.Title = appointment.Title;
+                app.Description = appointment.Description;
+                app.StartTime = appointment.StartTime;
+                app.EndTime = appointment.EndTime;
+                var att = app.Attendances.First(a => a.Person.UserID.Equals(appointment.UserID));
+                att.Accepted = appointment.Accepted;
                 try {
                     db.SaveChanges();
                 }
@@ -150,7 +167,6 @@ namespace NTRCalendarWPF.Model {
                 }
                 OnDataChanged?.Invoke();
             }
-            return appointment;
         }
     }
 }

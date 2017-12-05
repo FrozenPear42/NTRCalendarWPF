@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace NTRCalendarWPF.Model {
-    class UserAppointment {
-        public Guid AppointmentID { get; set; }
+    public class UserAppointment : ICloneable {
+        public Guid AppointmentID { get; internal set; }
+        public string UserID { get; internal set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime AppointmentDate { get; set; }
@@ -16,6 +17,19 @@ namespace NTRCalendarWPF.Model {
 
         public override string ToString() {
             return $"{AppointmentDate} {StartTime} - {EndTime}: {Title}";
+        }
+
+        public object Clone() {
+            return new UserAppointment {
+                AppointmentID = AppointmentID,
+                UserID = UserID,
+                Title = Title,
+                Description = Description,
+                AppointmentDate = AppointmentDate,
+                StartTime = StartTime,
+                EndTime = EndTime,
+                Accepted = Accepted
+            };
         }
     }
 }

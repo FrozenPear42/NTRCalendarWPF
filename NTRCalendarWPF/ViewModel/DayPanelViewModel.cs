@@ -13,22 +13,22 @@ using NTRCalendarWPF.Model;
 
 namespace NTRCalendarWPF.ViewModel {
     public class DayPanelViewModel : ViewModelBase {
-        private ObservableCollection<Appointment> _eventsSource;
-        private ObservableCollection<Appointment> _events;
+        private ObservableCollection<UserAppointment> _eventsSource;
+        private ObservableCollection<UserAppointment> _events;
         private DateTime _day;
         private string _title;
         private bool _isToday;
 
-        public ObservableCollection<Appointment> EventsSource {
+        public ObservableCollection<UserAppointment> EventsSource {
             get => _eventsSource;
             set {
                 SetProperty(ref _eventsSource, value);
-                value.CollectionChanged += (sender, args) => { UpdateEvents(); Console.Out.WriteLine("Changed Event source: U");                };
+                value.CollectionChanged += (sender, args) => UpdateEvents();
                 UpdateEvents();
             }
         }
 
-        public ObservableCollection<Appointment> Events {
+        public ObservableCollection<UserAppointment> Events {
             get => _events;
             set => SetProperty(ref _events, value);
         }
@@ -55,13 +55,13 @@ namespace NTRCalendarWPF.ViewModel {
 
         private void UpdateEvents() {
             if (EventsSource != null)
-                Events = new ObservableCollection<Appointment>(EventsSource
+                Events = new ObservableCollection<UserAppointment>(EventsSource
                     .Where(e => e.AppointmentDate.Equals(Day.Date))
                     .OrderBy(e => e.StartTime));
         }
 
         public DayPanelViewModel() {
-            Events = new ObservableCollection<Appointment>();
+            Events = new ObservableCollection<UserAppointment>();
         }
     }
 }

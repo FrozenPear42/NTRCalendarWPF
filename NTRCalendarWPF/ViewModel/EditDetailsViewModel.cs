@@ -9,8 +9,8 @@ using NTRCalendarWPF.Model;
 
 namespace NTRCalendarWPF.ViewModel {
     public class EditDetailsViewModel : ViewModelBase {
-        private Appointment _oldEvent;
-        private Appointment _currentEvent;
+        private UserAppointment _oldEvent;
+        private UserAppointment _currentEvent;
         private TimeSpan _startTime;
         private TimeSpan _endTime;
         private bool _isNewEvent;
@@ -36,7 +36,7 @@ namespace NTRCalendarWPF.ViewModel {
             }
         }
 
-        public Appointment CurrentEvent {
+        public UserAppointment CurrentEvent {
             get => _currentEvent;
             set {
                 SetProperty(ref _currentEvent, value);
@@ -45,7 +45,7 @@ namespace NTRCalendarWPF.ViewModel {
             }
         }
 
-        public Appointment OldEvent {
+        public UserAppointment OldEvent {
             get => _oldEvent;
             set {
                 _oldEvent = value;
@@ -53,16 +53,9 @@ namespace NTRCalendarWPF.ViewModel {
                 if (value != null)
                     Day = value.AppointmentDate;
                 if (value == null)
-                    CurrentEvent = new Appointment {AppointmentDate = Day};
+                    CurrentEvent = new UserAppointment {AppointmentDate = Day};
                 else
-                    CurrentEvent = new Appointment {
-                        AppointmentID = value.AppointmentID,
-                        Title = value.Title,
-                        Description = value.Description,
-                        AppointmentDate = value.AppointmentDate,
-                        StartTime = value.StartTime,
-                        EndTime = value.EndTime,
-                    };
+                    CurrentEvent = (UserAppointment) _oldEvent.Clone();
             }
         }
 
@@ -76,7 +69,7 @@ namespace NTRCalendarWPF.ViewModel {
         public ICommand CommandCancel { get; }
 
         public EditDetailsViewModel() {
-            CurrentEvent = new Appointment();
+            CurrentEvent = new UserAppointment();
             CommandSave = new RelayCommand(e => {
                 try {
                     if (IsNewEvent)
