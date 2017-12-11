@@ -9,6 +9,19 @@ using NTRCalendarWPF.ViewModel;
 namespace NTRCalendarWPF.Tests {
     [TestFixture]
     public class Tests {
+
+        private CalendarRepository _dbMock;
+        private Person _personMock;
+        private ICalendarEventRepository _repoMock;
+
+        [SetUp]
+        public void SetUp() {
+            _personMock = MockRepository.GenerateMock<Person>();
+            _dbMock = MockRepository.GenerateStrictMock<CalendarRepository>();
+            _repoMock = MockRepository.GenerateMock<ICalendarEventRepository>();
+            _repoMock.Stub(a => a.GetEvents()).Return(new List<UserAppointment>());
+        }
+
         [Test]
         public void ClickingOnBlankSpaceTriggersEditWindow() {
             var windowServiceMock = MockRepository.GenerateMock<IWindowService>();
@@ -58,11 +71,7 @@ namespace NTRCalendarWPF.Tests {
         public void ClickingNextButtonShiftsFirstDayBy7Days() {
             var calendarViewModel = new CalendarViewModel();
             var firstDay = calendarViewModel.FirstDay;
-            calendarViewModel.CalendarRepository = MockRepository.GenerateStub<CalendarRepository>();
-            calendarViewModel.CalendarRepository.Stub(a => a.GetAppointmentsByUserID(""))
-                .IgnoreArguments()
-                .Return(new List<UserAppointment>());
-
+            calendarViewModel.EventRepository = _repoMock;
             calendarViewModel.CommandNext.Execute(null);
             Assert.AreEqual(firstDay.AddDays(7), calendarViewModel.FirstDay);
         }
@@ -110,7 +119,7 @@ namespace NTRCalendarWPF.Tests {
             var editDetailsViewModel = new EditDetailsViewModel();
             var mockCloseAction = MockRepository.GenerateMock<Action>();
             var eventMock = MockRepository.GenerateStub<UserAppointment>();
-            var calendarRepositoryMock = MockRepository.GenerateMock<ICalendarEventRepository>();
+            var calendarRepositoryMock = _repoMock;
             editDetailsViewModel.CalendarEventRepository = calendarRepositoryMock;
             editDetailsViewModel.CloseAction = mockCloseAction;
             editDetailsViewModel.CommandSave.Execute(eventMock);
@@ -121,18 +130,12 @@ namespace NTRCalendarWPF.Tests {
         [Test]
         public void CancelingEditWindowDoesNotAffectRepository() {
             var editDetailsViewModel = new EditDetailsViewModel();
-            var calendarRepositoryMock = MockRepository.GenerateMock<ICalendarEventRepository>();
+            var calendarRepositoryMock = _repoMock;
             editDetailsViewModel.CalendarEventRepository = calendarRepositoryMock;
             editDetailsViewModel.CommandCancel.Execute(null);
             calendarRepositoryMock.AssertWasNotCalled(e => e.AddEvent(null), a => a.IgnoreArguments());
             calendarRepositoryMock.AssertWasNotCalled(e => e.RemoveEvent(null), a => a.IgnoreArguments());
             calendarRepositoryMock.AssertWasNotCalled(e => e.ReplaceEvent(null, null), a => a.IgnoreArguments());
         }
-
-        [Test]
-        public void RunningAppWithNoParametersCauseAppToClose() {
-            
-        }
-
     }
 }
