@@ -24,18 +24,6 @@ namespace NTRCalendarWPF.Model {
             }
         }
 
-//        public List<Person> GetPeople() {
-//            using (var db = new StorageContext()) {
-//                return db.People.ToList();
-//            }
-//        }
-//
-//        public List<Appointment> GetAppointments() {
-//            using (var db = new StorageContext()) {
-//                return db.Appointments.ToList();
-//            }
-//        }
-
         public List<UserAppointment> GetAppointmentsByUserID(string user) {
             using (var db = new StorageContext()) {
                 return db.Attendances
@@ -43,6 +31,7 @@ namespace NTRCalendarWPF.Model {
                     .Select(a => new UserAppointment {
                         AppointmentID = a.Appointment.AppointmentID,
                         UserID = user,
+                        Timestamp = a.Appointment.Timestamp,
                         Title = a.Appointment.Title,
                         Description = a.Appointment.Description,
                         AppointmentDate = a.Appointment.AppointmentDate,
@@ -139,20 +128,25 @@ namespace NTRCalendarWPF.Model {
             }
         }
 
-        public void UpdateAppointment(UserAppointment appointment) {
+        public void UpdateAppointment(UserAppointment oldAppointment, UserAppointment newAppointment) {
             using (var db = new StorageContext()) {
-                var app = db.Appointments.First(a => a.AppointmentID.Equals(appointment.AppointmentID));
-                app.Title = appointment.Title;
-                app.Description = appointment.Description;
-                app.StartTime = appointment.StartTime;
-                app.EndTime = appointment.EndTime;
-                var att = app.Attendances.First(a => a.Person.UserID.Equals(appointment.UserID));
-                att.Accepted = appointment.Accepted;
+                var app = db.Appointments.First(a => a.AppointmentID.Equals(newAppointment.AppointmentID));
+
+                if (!app.Timestamp.SequenceEqual(oldAppointment.Timestamp)) {
+                    throw new Exception("This Appointment was already edited by another user instance.");
+                }
+
+                app.Title = newAppointment.Title;
+                app.Description = newAppointment.Description;
+                app.StartTime = newAppointment.StartTime;
+                app.EndTime = newAppointment.EndTime;
+                var att = app.Attendances.First(a => a.Person.UserID.Equals(newAppointment.UserID));
+                att.Accepted = newAppointment.Accepted;
                 try {
                     db.SaveChanges();
                 }
-                catch (DBConcurrencyException e) {
-                    throw new Exception(e.Message);
+                catch (DBConcurrencyException) {
+                    throw new Exception("This Appointment was already edited by another user instance.");
                 }
                 catch (DbEntityValidationException e) {
                     var message = e.EntityValidationErrors

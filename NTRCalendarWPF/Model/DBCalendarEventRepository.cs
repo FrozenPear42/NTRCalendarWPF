@@ -34,7 +34,7 @@ namespace NTRCalendarWPF.Model {
         }
 
         public bool ReplaceEvent(UserAppointment oldAppointment, UserAppointment newAppointment) {
-            _repository.UpdateAppointment(newAppointment);
+            _repository.UpdateAppointment(oldAppointment, newAppointment);
             log.InfoFormat("Updated appointment in DB: {0} => {1}", oldAppointment, newAppointment);
             return true;
         }
