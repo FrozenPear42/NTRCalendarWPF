@@ -1,12 +1,11 @@
 ﻿<Application x:Class="NTRCalendarWPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel"
-             StartupUri="View/MainWindow.xaml">
+             xmlns:viewModel="clr-namespace:NTRCalendarWPF.ViewModel">
     <Application.Resources>
         <viewModel:CalendarViewModel x:Key="CalendarViewModel" />
         <viewModel:EditDetailsViewModel x:Key="EditDetailsViewModel" />
         <viewModel:DayPanelViewModel x:Key="DayPanelViewModel" />
     </Application.Resources>
-    
+
 </Application>
